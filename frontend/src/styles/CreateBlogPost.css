@@ -1,0 +1,48 @@
+.create-blog-post-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 50px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  input,
+  textarea {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  button {
+    background-color: #2a2b2e;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  
+  .error {
+    color: red;
+    margin-top: 10px;
+  }
+  

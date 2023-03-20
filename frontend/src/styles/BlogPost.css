@@ -1,0 +1,64 @@
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+  
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 0;
+  }
+  
+  .text-muted {
+    font-size: 1rem;
+    margin-top: 0;
+  }
+  
+  hr {
+    margin: 2rem 0;
+    border: none;
+    border-top: 1px solid #ddd;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+  }
+  
+  .comment {
+    margin-top: 1rem;
+    border: 1px solid #ddd;
+    padding: 1rem;
+  }
+  
+  .comment h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .comment p {
+    margin-top: 0;
+    font-size: 1rem;
+  }
+  
+  .comment__meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .comment__author {
+    font-weight: bold;
+  }
+  
+  .comment__likes {
+    color: #007bff;
+    cursor: pointer;
+  }
+  
