@@ -1,63 +1,114 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import axios from "axios";
-
+import { Link } from "react-router-dom";
 import "../styles/Home.css";
 
 const Home = () => {
   const [blogs, setBlogs] = useState([]);
   const [topics, setTopics] = useState([]);
   const [filteredBlogs, setFilteredBlogs] = useState([]);
-  const [selectedTopic, setSelectedTopic] = useState("");
+  const [selectedTopics, setSelectedTopics] = useState(new Set());
 
   useEffect(() => {
+    const topicsList = [
+      "MongoDB",
+      "JavaScript",
+      "UI/UX",
+      "Accessibility",
+      "Performance",
+      "Design",
+      "ReactJS",
+      "Angular",
+      "NodeJS",
+      "Express",
+      "Career",
+      "Best Practices",
+      "SEO",
+      "Projects",
+      "Testing",
+    ];
     const fetchBlogs = async () => {
       const res = await axios.get(`${process.env.REACT_APP_BASE_API_URL}/blogs`);
       setBlogs(res.data);
       setFilteredBlogs(res.data);
-      const topicsSet = new Set();
+      const topicsSet = new Set(topicsList);
       res.data.forEach((blog) => {
         topicsSet.add(blog.topic);
       });
-      setTopics(Array.from(topicsSet));
+      setTopics(Array.from(topicsSet).filter((topic) => topic !== undefined));
     };
     fetchBlogs();
   }, []);
 
-  const handleTopicChange = (event) => {
-    setSelectedTopic(event.target.value);
-    if (event.target.value === "") {
+  const handleTopicClick = (topic) => {
+    const newSelectedTopics = new Set(selectedTopics);
+    if (selectedTopics.has(topic)) {
+      newSelectedTopics.delete(topic);
+    } else {
+      newSelectedTopics.add(topic);
+    }
+    setSelectedTopics(newSelectedTopics);
+    filterBlogs(newSelectedTopics);
+  };
+
+  const handleClearClick = () => {
+    setSelectedTopics(new Set());
+    filterBlogs(new Set());
+  };
+
+  const filterBlogs = (selectedTopics) => {
+    if (selectedTopics.size === 0) {
       setFilteredBlogs(blogs);
     } else {
-      setFilteredBlogs(blogs.filter((blog) => blog.topic === event.target.value));
+      const filteredBlogs = blogs.filter((blog) =>
+        Array.from(selectedTopics).some((topic) => blog.topic === topic)
+      );
+      setFilteredBlogs(filteredBlogs);
     }
   };
 
   return (
     <div className="home-container">
+      <h1 style={{textAlign: "center"}}>Welcome to The Tunnicliff Blog!</h1>
+      <br />
       <div className="topics-container">
-        <select value={selectedTopic} onChange={handleTopicChange}>
-          <option value="">All topics</option>
-          {topics.map((topic) => (
-            <option key={topic} value={topic}>
-              {topic}
-            </option>
-          ))}
-        </select>
+        <div className="scroll-container">
+          <ul className="topic-list">
+            {topics.map((topic) => (
+              <li
+                key={topic}
+                className={`topic-button ${
+                  selectedTopics.has(topic) ? "active" : ""
+                }`}
+                onClick={() => handleTopicClick(topic)}
+              >
+                {topic}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="clear-container">
+          <button className="clear-button" onClick={handleClearClick}>
+            Clear topics
+          </button>
+       </div> 
       </div>
+      <br />
       <div className="blogs-container">
         {filteredBlogs.map((blog) => (
-          <div key={blog._id} className="blog-card">
+          <div className="blog-card" key={blog.id}>
             <div className="blog-card-header">
-              <Link to={`/blogs/${blog._id}`}>
-                <h2 className="blog-card-title">{blog.title}</h2>
-              </Link>
+              <h2 className="blog-card-title">
+                <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+              </h2>
               <div className="blog-card-meta">
                 <span className="blog-card-topic">{blog.topic}</span>
-                <span className="blog-card-date">{new Date(blog.date).toLocaleDateString()}</span>
+                <span className="blog-card-date">{blog.date}</span>
               </div>
             </div>
-            <div className="blog-card-body">{blog.content}</div>
+            <div className="blog-card-body">
+              <p>{blog.content}</p>
+            </div>
           </div>
         ))}
       </div>

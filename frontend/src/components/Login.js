@@ -1,19 +1,17 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from "axios";
-import "../styles/Login.css";
 
 const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
 
-const Login = ({ setUser }) => {
+function Login({ setUser }) {
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: ''
   });
-
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const history = useNavigate();
+  const [errorMessage, setErrorMessage] = useState('');
+  const [showModal, setShowModal] = useState(true);
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     setFormData({
@@ -28,45 +26,67 @@ const Login = ({ setUser }) => {
       const response = await axios.post(`${BASE_API_URL}/login`, formData);
       localStorage.setItem("token", response.data.token);
       setUser(response.data.user);
-      history.push("/");
+      navigate('/');
     } catch (error) {
       setErrorMessage("Invalid email or password");
     }
   };
 
+  const closeModal = () => {
+    setShowModal(false);
+    navigate('/');
+  };
+
   return (
-    <div className="login-container">
-      <form onSubmit={handleSubmit}>
-        <h3>Login</h3>
-        <div className="form-group">
-          <input
-            type="email"
-            className="form-control"
-            placeholder="Email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
+    <>
+      {showModal && (
+        <div className="modal">
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h4 className="modal-title">Login</h4>
+                <button type="button" className="close" onClick={closeModal} data-dismiss="modal">
+                  &times;
+                </button>
+              </div>
+              <div className="modal-body">
+                <div className="login-container">
+                  <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                      <input
+                        type="email"
+                        className="form-control"
+                        placeholder="Email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                    <div className="form-group">
+                      <input
+                        type="password"
+                        className="form-control"
+                        placeholder="Password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                    {errorMessage && <p className="error-message">{errorMessage}</p>}
+                    <button type="submit" className="btn btn-primary">
+                      Login
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="form-group">
-          <input
-            type="password"
-            className="form-control"
-            placeholder="Password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-        <button type="submit" className="btn btn-primary">
-          Login
-        </button>
-      </form>
-    </div>
+      )}
+    </>
   );
-};
+}
 
 export default Login;

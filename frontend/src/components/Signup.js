@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
+import "../styles/Signup.css";
 
 const Signup = () => {
   const [username, setUsername] = useState('');
@@ -25,15 +26,21 @@ const Signup = () => {
     }
   };
 
+  const navigate = useNavigate();
+
+  const closeModal = () => {
+    navigate('/');
+  };
+
   return (
     <div className="modal">
       <div className="modal-dialog">
         <div className="modal-content">
+          <button type="button" className="close" onClick={closeModal} data-dismiss="modal">
+              &times;
+          </button>
           <div className="modal-header">
             <h4 className="modal-title">Sign up</h4>
-            <button type="button" className="close" data-dismiss="modal">
-              &times;
-            </button>
           </div>
           <div className="modal-body">
             {errorMessage && (
@@ -41,7 +48,7 @@ const Signup = () => {
             )}
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <label htmlFor="username">Username</label>
+                <label htmlFor="username">Username: &nbsp; </label>
                 <input
                   type="text"
                   className="form-control"
@@ -52,7 +59,7 @@ const Signup = () => {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="email">Email address</label>
+                <label htmlFor="email">Email address: &nbsp; </label>
                 <input
                   type="email"
                   className="form-control"
@@ -63,7 +70,7 @@ const Signup = () => {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password">Password: &nbsp; </label>
                 <input
                   type="password"
                   className="form-control"
@@ -74,7 +81,7 @@ const Signup = () => {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="confirmPassword">Confirm Password</label>
+                <label htmlFor="confirmPassword">Confirm Password: &nbsp;</label>
                 <input
                   type="password"
                   className="form-control"
@@ -88,6 +95,7 @@ const Signup = () => {
                 Submit
               </button>
             </form>
+            <br />
             <div className="mt-3">
               Already have an account? <Link to="/login">Log in</Link>
             </div>

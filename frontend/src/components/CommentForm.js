@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import "../styles/CommentForm.css";
 
 function CommentForm(props) {
   const [commentText, setCommentText] = useState("");

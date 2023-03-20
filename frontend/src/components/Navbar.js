@@ -1,16 +1,20 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import "../styles/Navbar.css";
 
 const Navbar = ({ user, setUser }) => {
+  const navigate = useNavigate();
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     setUser(null);
+    navigate('/');
   };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <Link className="navbar-brand" to="/">
-        Blog App
+        The Tunnicliff Blog
       </Link>
       <div className="collapse navbar-collapse">
         <ul className="navbar-nav mr-auto">

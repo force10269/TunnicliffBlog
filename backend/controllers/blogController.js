@@ -20,6 +20,9 @@ router.get('/:id', getBlog, (req, res) => {
 
 // Create one blog
 router.post('/', async (req, res) => {
+  if(Object.keys(req.body).length === 0){
+    req.body = req.query;
+  }
   const blog = new Blog({
     title: req.body.title,
     postTime: req.body.postTime,

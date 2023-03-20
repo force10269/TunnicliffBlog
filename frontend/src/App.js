@@ -23,7 +23,7 @@ function App() {
           {!user && (
             <>
               <Route path="/login" element={<Login setUser={setUser} />} />
-              <Route path="/signup" element={<Signup />} />
+              <Route path="/signup" element={<Signup/>} />
             </>
           )}
         </Routes>

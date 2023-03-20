@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import CommentForm from "./CommentForm";
-
 import "../styles/CommentSection.css";
 
 function CommentSection() {
