@@ -7,7 +7,7 @@ const { mongoose } = require("./db.js");
 
 var app = express();
 app.use(bodyParser.json());
-app.use(cors([{ origin: process.env.CORS_ORIGIN }]));
+app.use(cors());
 
 var blogController = require('./controllers/blogController.js');
 app.use('/blogs', blogController);
@@ -24,7 +24,7 @@ app.use('/users', userController);
 var loginController = require('./controllers/loginController.js');
 var signupController = require('./controllers/signupController.js');
 
-app.post('/login', loginController.login);
-app.post('/signup', signupController.signup);
+app.use('/login', loginController);
+app.use('/signup', signupController);
 
 module.exports = { app };

@@ -12,7 +12,7 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('/signup', {
+      const res = await axios.post(`${process.env.REACT_APP_BASE_API_URL}/signup`, {
         username,
         email,
         password,

@@ -12,7 +12,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchBlogs = async () => {
-      const res = await axios.get("/blogs");
+      const res = await axios.get(`${process.env.REACT_APP_BASE_API_URL}/blogs`);
       setBlogs(res.data);
       setFilteredBlogs(res.data);
       const topicsSet = new Set();
