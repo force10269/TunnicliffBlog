@@ -78,6 +78,13 @@ const Home = () => {
   return (
     <div className="home-container">
       <h1 style={{textAlign: "center"}}>Welcome to The Tunnicliff Blog!</h1>
+      <p id="about" style={{fontSize: "1.3rem"}}>
+        My name is Korry Tunnicliff, and I am a software developer. 
+        <br /><br />
+        This blog is dedicated to logging my progress with various issues in projects,
+        as well as interesting things I have learned throughout the course of my software development journey. This website was built with the use
+        use of the MERN stack, and is hosted on both Heroku and Netlify.
+      </p>
       <br />
       <div className="topics-container">
         <div className="scroll-container">
@@ -107,7 +114,7 @@ const Home = () => {
       <br />
       <div className="blogs-container">
         {filteredBlogs.map((blog) => (
-          <div className="blog-card" key={blog.id}>
+          <div className="blog-card" key={blog._id}>
           <div className="blog-card-header">
             <h2 className="blog-card-title">
               <Link to={`/blogs/${blog._id}`} className="blog-card-link">

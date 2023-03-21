@@ -45,3 +45,13 @@
 .search-icon:hover {
     color: #ffffff;
 }
+
+@media only screen and (max-width: 576px) {
+    .navbar-brand {
+      font-size: 1rem;
+    }
+    
+    .navbar-nav .nav-link {
+      font-size: 1rem;
+    }
+}

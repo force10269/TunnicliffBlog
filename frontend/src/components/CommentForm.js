@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import axios from "axios";
 import "../styles/CommentForm.css";
 
@@ -14,7 +13,6 @@ function CommentForm(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const user = JSON.parse(localStorage.getItem("user"));
-    console.log(user);
     // Remove email, password, and __v fields
     delete user.email;
     delete user.password;
@@ -41,6 +39,11 @@ function CommentForm(props) {
     setCommentText("");
   }
 
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user) {
+    return <p>Please log in to post a comment.</p>;
+  }
+
   return (
     <form className="comment-form" onSubmit={handleSubmit}>
       <div className="form-group">
@@ -59,9 +62,5 @@ function CommentForm(props) {
     </form>
   );
 }
-
-CommentForm.propTypes = {
-  onSubmitComment: PropTypes.func.isRequired,
-};
 
 export default CommentForm;

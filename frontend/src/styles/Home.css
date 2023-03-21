@@ -157,7 +157,12 @@
   color: #a4c2a8;
 }
 
-@media (max-width: 768px) {
+#about {
+  margin-left: 10vh;
+  margin-right: 10vh;
+}
+
+@media only screen and (max-width: 768px) {
   .topic-button {
     font-size: 1rem;
     margin-right: 5px;
@@ -167,5 +172,10 @@
   .clear-button {
     font-size: 1rem;
     padding: 8px 16px;
+  }
+
+  #about {
+    margin-left: 30px;
+    margin-right: 30px;
   }
 }

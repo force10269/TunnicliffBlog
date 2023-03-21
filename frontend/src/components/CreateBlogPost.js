@@ -118,7 +118,7 @@ const CreateBlogPost = () => {
           value={blog.content}
           onChange={(value) => setBlog((prevBlog) => ({ ...prevBlog, content: value }))}
         />
-        <br />
+        <br /><br />
 
         <label htmlFor="topic">Topic(s)</label>
         <ul className="topic-list">
