@@ -40,8 +40,24 @@ const CreateBlogPost = () => {
     // Rename _id field to userId
     user.userId = user._id;
     delete user._id;
-    const blogWithAuthor = { ...blog, author: user, topics: Array.from(selectedFilters), };
+    
+    // Upload the image first and get the ObjectId
+    const imageFormData = new FormData();
+    if (blog.image) {
+      imageFormData.append("image", blog.image.file);
+    }
+    
     try {
+      const imageResponse = await axios.post(`${BASE_API_URL}/images`, imageFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      const coverImage = imageResponse.data.id;
+
+      // Append the coverImage attribute to the blog
+      const blogWithAuthor = { ...blog, author: user, topics: Array.from(selectedFilters), coverImage: coverImage };
+
       const response = await axios.post(`${BASE_API_URL}/blogs`, blogWithAuthor);
       if (response.status === 201) {
         navigate('/');
@@ -63,6 +79,7 @@ const CreateBlogPost = () => {
             image: {
               name: file.name,
               dataUrl: reader.result,
+              file: file, 
             },
           };
         });

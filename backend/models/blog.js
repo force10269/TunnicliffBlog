@@ -37,6 +37,10 @@ const blogSchema = new mongoose.Schema({
   content: {
     type: String,
     required: true,
+  },
+  coverImage: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Image",
   }
 });
 

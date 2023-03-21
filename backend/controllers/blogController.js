@@ -33,6 +33,7 @@ router.post('/', async (req, res) => {
       username: req.body.author.username
     },
     topics: req.body.topics,
+    coverImage: req.body.coverImage,
   });
   try {
     const newBlog = await blog.save();
@@ -66,6 +67,9 @@ router.patch('/:id', getBlog, async (req, res) => {
   }
   if(req.body.topics != null) {
     res.blog.topics = req.body.topics;
+  }
+  if(req.body.coverImage != null) {
+    res.blog.coverImage = req.body.coverImage;
   }
   try {
     const updatedBlog = await res.blog.save();

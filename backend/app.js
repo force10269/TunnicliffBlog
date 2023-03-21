@@ -6,7 +6,8 @@ const session = require("express-session");
 const { mongoose } = require("./db.js");
 
 var app = express();
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '4mb' }));
+app.use(bodyParser.urlencoded({ limit: '4mb', extended: true }));
 app.use(cors());
 
 var blogController = require('./controllers/blogController.js');
@@ -20,6 +21,9 @@ app.use('/likes', likeController);
 
 var userController = require('./controllers/userController.js');
 app.use('/users', userController);
+
+var imageController = require('./controllers/imageController.js');
+app.use('/images', imageController);
 
 var loginController = require('./controllers/loginController.js');
 var signupController = require('./controllers/signupController.js');
