@@ -53,6 +53,7 @@ function Login({ setUser }) {
               <div className="modal-body">
                 <div className="login-container">
                   <form onSubmit={handleSubmit}>
+                    <br />
                     <div className="form-group">
                       <input
                         type="email"

@@ -10,6 +10,10 @@ const Signup = ({ setUser }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  const handleCloseError = () => {
+    setErrorMessage("");
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -30,7 +34,11 @@ const Signup = ({ setUser }) => {
       localStorage.setItem("user", JSON.stringify(loginRes.data.user));
       navigate('/');
     } catch (error) {
-      setErrorMessage(error.response.data.message);
+      if(error.response?.data?.errors?.[0]?.hasOwnProperty('msg')){
+        setErrorMessage(error.response.data.errors[0].msg);
+      }else{
+        setErrorMessage(error.response.data.message);
+      }
     }
   };
 
@@ -52,7 +60,15 @@ const Signup = ({ setUser }) => {
           </div>
           <div className="modal-body">
             {errorMessage && (
-              <div className="alert alert-danger">{errorMessage}</div>
+              <div className="alert-container">
+                <div className="alert alert-danger">
+                  {errorMessage}
+                  &nbsp;
+                  <button type="button" className="alert-close" onClick={handleCloseError}>
+                    &times;
+                  </button>
+                </div>
+              </div>
             )}
             <form onSubmit={handleSubmit}>
               <div className="form-group">

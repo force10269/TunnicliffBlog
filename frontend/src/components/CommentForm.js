@@ -6,7 +6,6 @@ import "../styles/CommentForm.css";
 function CommentForm(props) {
   const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
   const [commentText, setCommentText] = useState("");
-  const [error, setError] = useState("");
 
   function handleCommentTextChange(event) {
     setCommentText(event.target.value);
@@ -32,9 +31,10 @@ function CommentForm(props) {
     }
 
     try {
-      await axios.post(`${BASE_API_URL}/comments`, comment)
+      const response = await axios.post(`${BASE_API_URL}/comments`, comment);
+      props.setComments([...props.comments, response.data]);
     } catch (err) {
-      setError(err.message);
+      console.error(err.message);
     }
 
     // Clear the comment text field

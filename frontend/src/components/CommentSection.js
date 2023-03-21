@@ -23,7 +23,7 @@ function CommentSection() {
   return (
     <div className="comment-section">
       <h2>Comments ({comments.length})</h2>
-      <CommentForm blogId={id} setComments={setComments} />
+      <CommentForm blogId={id} comments={comments} setComments={setComments} />
       <hr />
       <div className="comment-list">
         {comments.map((comment) => (

@@ -53,6 +53,28 @@ const Home = () => {
     }
   };
 
+  const formatDate = (date) => {
+    const d = new Date(date);
+    return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
+  }
+
+  const replaceHeadersWithParagraphs = (html) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const headerTags = ["h1", "h2", "h3", "h4", "h5", "h6"];
+  
+    headerTags.forEach((tag) => {
+      const headers = doc.querySelectorAll(tag);
+      headers.forEach((header) => {
+        const p = document.createElement("p");
+        p.innerHTML = header.innerHTML;
+        header.parentNode.replaceChild(p, header);
+      });
+    });
+  
+    return doc.body.innerHTML;
+  };
+
   return (
     <div className="home-container">
       <h1 style={{textAlign: "center"}}>Welcome to The Tunnicliff Blog!</h1>
@@ -78,24 +100,42 @@ const Home = () => {
             Clear topics
           </button>
        </div> 
+       <div className="blog-count">
+          Blogs: {filteredBlogs.length}
+        </div>
       </div>
       <br />
       <div className="blogs-container">
         {filteredBlogs.map((blog) => (
           <div className="blog-card" key={blog.id}>
-            <div className="blog-card-header">
-              <h2 className="blog-card-title">
-                <Link to={`/blogs/${blog._id}`}>{blog.title}</Link>
-              </h2>
-              <div className="blog-card-meta">
-                <span className="blog-card-topic">{blog.topics}</span>
-                <span className="blog-card-date">{blog.postTime}</span>
-              </div>
-            </div>
-            <div className="blog-card-body">
-              <p>{blog.content}</p>
+          <div className="blog-card-header">
+            <h2 className="blog-card-title">
+              <Link to={`/blogs/${blog._id}`} className="blog-card-link">
+                {blog.title}
+              </Link>
+            </h2>
+            <div className="blog-card-meta">
+              <span className="blog-card-author">
+                <h4>Author: &nbsp; {blog.author.username}</h4>
+              </span>
+              <span className="blog-card-topic">
+                Topics: &nbsp; <u>{blog.topics.join(', ')}</u>
+              </span>
+              <br />
+              <span className="blog-card-date">
+                Date: &nbsp; {formatDate(blog.postTime)}
+              </span>
             </div>
           </div>
+          <div className="blog-card-body">
+          <div
+            className="blog-card-content"
+            dangerouslySetInnerHTML={{
+              __html: replaceHeadersWithParagraphs(blog.content),
+            }}
+          ></div>
+          </div>
+        </div>
         ))}
       </div>
     </div>
