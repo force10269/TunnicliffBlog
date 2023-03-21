@@ -16,7 +16,7 @@ function App() {
         <Navbar user={user} setUser={setUser} />
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route path="/blog/:id" element={<BlogPost />} />
+          <Route path="/blogs/:id" element={<BlogPost />} />
           {user && (
             <Route path="/create-blog-post" element={<CreateBlogPost />} />
           )}

@@ -33,6 +33,10 @@
   transition: background-color 0.2s ease-in-out;
 }
 
+.topic-button:hover {
+  background-color: #d5927f;
+}
+
 .topic-button.active {
   background-color: #af1313;
   color: #fff;
@@ -114,4 +118,11 @@
     font-size: 1rem;
     padding: 8px 16px;
   }
+}
+
+#submit {
+  background-color: #3c91e6;
+  margin-top: 5vh;
+  border-radius: 10px;
+  font-size: 3vh;
 }

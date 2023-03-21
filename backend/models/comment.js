@@ -23,7 +23,7 @@ const commentSchema = new mongoose.Schema({
     profilePic: {
       type: String,
     },
-    name: {
+    username: {
       type: String,
     },
   },

@@ -5,36 +5,37 @@ import CommentForm from "./CommentForm";
 import "../styles/CommentSection.css";
 
 function CommentSection() {
-  const { blogId } = useParams();
+  const { id } = useParams();
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
     async function fetchComments() {
       try {
-        const res = await axios.get(`/blogs/${blogId}/comments`);
+        const res = await axios.get(`${process.env.REACT_APP_BASE_API_URL}/blogs/${id}/comments`);
         setComments(res.data);
       } catch (error) {
         console.error(error);
       }
     }
     fetchComments();
-  }, [blogId]);
+  }, [id]);
 
   return (
     <div className="comment-section">
       <h2>Comments ({comments.length})</h2>
-      <CommentForm blogId={blogId} setComments={setComments} />
+      <CommentForm blogId={id} setComments={setComments} />
       <hr />
       <div className="comment-list">
         {comments.map((comment) => (
           <div key={comment._id} className="comment">
             <img
               src={comment.author.profilePic}
-              alt={`${comment.author.name}'s profile pic`}
+              alt={`${comment.author.username}'s profile pic`}
               className="profile-pic"
             />
             <div className="comment-details">
-              <h5>{comment.author.name}</h5>
+              <h5 style={{paddingTop: "15px", color: "#2a2b2e"}}>{comment.author.username}</h5>
+              <hr />
               <p>{comment.text}</p>
               <span>{comment.nLikes} likes</span>
             </div>

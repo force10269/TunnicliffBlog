@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import CommentSection from "./CommentSection";
@@ -6,14 +6,14 @@ import "../styles/BlogPost.css";
 
 function BlogPost() {
   const { id } = useParams();
-  const [blog, setBlog] = React.useState({});
-  const [loading, setLoading] = React.useState(true);
-  const [error, setError] = React.useState("");
+  const [blog, setBlog] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function getBlogPost() {
       try {
-        const response = await axios.get(`/blogs/${id}`);
+        const response = await axios.get(`${process.env.REACT_APP_BASE_API_URL}/blogs/${id}`);
         setBlog(response.data);
       } catch (error) {
         setError("Sorry, an error occurred.");

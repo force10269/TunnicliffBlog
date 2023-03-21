@@ -1,19 +1,41 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
 import "../styles/CommentForm.css";
 
 function CommentForm(props) {
+  const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
   const [commentText, setCommentText] = useState("");
+  const [error, setError] = useState("");
 
   function handleCommentTextChange(event) {
     setCommentText(event.target.value);
   }
 
-  function handleSubmit(event) {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    const user = JSON.parse(localStorage.getItem("user"));
+    console.log(user);
+    // Remove email, password, and __v fields
+    delete user.email;
+    delete user.password;
+    delete user.__v;
 
-    // Call a function passed in through props to submit the comment
-    props.onSubmitComment(commentText);
+    // Rename _id field to userId
+    user.userId = user._id;
+    delete user._id;
+
+    const comment = {
+      blogId: props.blogId,
+      text: commentText,
+      author: user
+    }
+
+    try {
+      await axios.post(`${BASE_API_URL}/comments`, comment)
+    } catch (err) {
+      setError(err.message);
+    }
 
     // Clear the comment text field
     setCommentText("");

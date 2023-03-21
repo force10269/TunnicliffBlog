@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Blog = require('../models/blog');
+const Comment = require('../models/comment');
 
 // Get all blogs
 router.get('/', async (req, res) => {
@@ -79,6 +80,16 @@ router.delete('/:id', getBlog, async (req, res) => {
   try {
     await res.blog.remove();
     res.json({ message: 'Deleted blog' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Get all comments for a blog
+router.get('/:blogId/comments', async (req, res) => {
+  try {
+    const comments = await Comment.find({ blogId: req.params.blogId });
+    res.json(comments);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

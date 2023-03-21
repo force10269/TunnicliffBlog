@@ -85,11 +85,11 @@ const Home = () => {
           <div className="blog-card" key={blog.id}>
             <div className="blog-card-header">
               <h2 className="blog-card-title">
-                <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+                <Link to={`/blogs/${blog._id}`}>{blog.title}</Link>
               </h2>
               <div className="blog-card-meta">
-                <span className="blog-card-topic">{blog.topic}</span>
-                <span className="blog-card-date">{blog.date}</span>
+                <span className="blog-card-topic">{blog.topics}</span>
+                <span className="blog-card-date">{blog.postTime}</span>
               </div>
             </div>
             <div className="blog-card-body">

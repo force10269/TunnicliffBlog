@@ -142,7 +142,7 @@ const CreateBlogPost = () => {
        </div> 
         <br />
 
-        <button type="submit">Create Blog Post</button>
+        <button id="submit" type="submit">Create Blog Post</button>
       </form>
       {error && <p className="error">{error}</p>}
     </div>

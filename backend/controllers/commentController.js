@@ -27,9 +27,10 @@ router.post('/', async (req, res) => {
     author: {
       userId: req.body.author.userId,
       profilePic: req.body.author.profilePic,
-      name: req.body.author.name
+      username: req.body.author.username
     }
   });
+
   try {
     const newComment = await comment.save();
     res.status(201).json(newComment);
@@ -47,7 +48,7 @@ router.patch('/:id', getComment, async (req, res) => {
     res.comment.author = {
       userId: req.body.author.userId,
       profilePic: req.body.author.profilePic,
-      name: req.body.author.name
+      username: req.body.author.username
     };
   }
   if (req.body.nLikes != null) {
