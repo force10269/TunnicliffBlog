@@ -25,20 +25,20 @@ router.post('/', async (req, res) => {
   }
   const blog = new Blog({
     title: req.body.title,
-    postTime: req.body.postTime,
-    nLikes: req.body.nLikes,
-    numComments: req.body.numComments,
+    content: req.body.content,
     author: {
       userId: req.body.author.userId,
       profilePic: req.body.author.profilePic,
-      name: req.body.author.name
-    }
+      username: req.body.author.username
+    },
+    topics: req.body.topics,
   });
   try {
     const newBlog = await blog.save();
     res.status(201).json(newBlog);
   } catch (err) {
     res.status(400).json({ message: err.message });
+    console.error(err);
   }
 });
 
@@ -60,8 +60,11 @@ router.patch('/:id', getBlog, async (req, res) => {
     res.blog.author = {
       userId: req.body.author.userId,
       profilePic: req.body.author.profilePic,
-      name: req.body.author.name
+      username: req.body.author.username
     };
+  }
+  if(req.body.topics != null) {
+    res.blog.topics = req.body.topics;
   }
   try {
     const updatedBlog = await res.blog.save();

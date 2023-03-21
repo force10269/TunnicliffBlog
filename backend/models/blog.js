@@ -26,10 +26,18 @@ const blogSchema = new mongoose.Schema({
     profilePic: {
       type: String,
     },
-    name: {
+    username: {
       type: String,
     },
   },
+  topics: {
+    type: [String],
+    required: true,
+  },
+  content: {
+    type: String,
+    required: true,
+  }
 });
 
 module.exports = mongoose.model("Blog", blogSchema);

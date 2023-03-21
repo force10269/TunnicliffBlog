@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import "../styles/Signup.css";
 
-const Signup = () => {
+const Signup = ({ setUser }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,14 +13,22 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(`${process.env.REACT_APP_BASE_API_URL}/signup`, {
+      await axios.post(`${process.env.REACT_APP_BASE_API_URL}/signup`, {
         username,
         email,
         password,
         confirmPassword,
       });
-      console.log(res);
-      // redirect to login page
+  
+      const loginRes = await axios.post(`${process.env.REACT_APP_BASE_API_URL}/login`, {
+        email,
+        password,
+      });
+  
+      localStorage.setItem("token", loginRes.data.token);
+      setUser(loginRes.data.user);
+      localStorage.setItem("user", JSON.stringify(loginRes.data.user));
+      navigate('/');
     } catch (error) {
       setErrorMessage(error.response.data.message);
     }

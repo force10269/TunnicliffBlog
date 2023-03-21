@@ -10,36 +10,22 @@ const Home = () => {
   const [selectedTopics, setSelectedTopics] = useState(new Set());
 
   useEffect(() => {
-    const topicsList = [
-      "MongoDB",
-      "JavaScript",
-      "UI/UX",
-      "Accessibility",
-      "Performance",
-      "Design",
-      "ReactJS",
-      "Angular",
-      "NodeJS",
-      "Express",
-      "Career",
-      "Best Practices",
-      "SEO",
-      "Projects",
-      "Testing",
-    ];
+    const topicsList = process.env.REACT_APP_FILTERS.split(',');
     const fetchBlogs = async () => {
       const res = await axios.get(`${process.env.REACT_APP_BASE_API_URL}/blogs`);
       setBlogs(res.data);
       setFilteredBlogs(res.data);
       const topicsSet = new Set(topicsList);
       res.data.forEach((blog) => {
-        topicsSet.add(blog.topic);
+        if (blog.topics) {
+          blog.topics.forEach((topic) => topicsSet.add(topic));
+        }
       });
       setTopics(Array.from(topicsSet).filter((topic) => topic !== undefined));
     };
     fetchBlogs();
   }, []);
-
+  
   const handleTopicClick = (topic) => {
     const newSelectedTopics = new Set(selectedTopics);
     if (selectedTopics.has(topic)) {
@@ -50,18 +36,18 @@ const Home = () => {
     setSelectedTopics(newSelectedTopics);
     filterBlogs(newSelectedTopics);
   };
-
+  
   const handleClearClick = () => {
     setSelectedTopics(new Set());
     filterBlogs(new Set());
   };
-
+  
   const filterBlogs = (selectedTopics) => {
     if (selectedTopics.size === 0) {
       setFilteredBlogs(blogs);
     } else {
       const filteredBlogs = blogs.filter((blog) =>
-        Array.from(selectedTopics).some((topic) => blog.topic === topic)
+        blog.topics ? blog.topics.some((topic) => selectedTopics.has(topic)) : false
       );
       setFilteredBlogs(filteredBlogs);
     }
