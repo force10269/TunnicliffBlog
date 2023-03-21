@@ -13,10 +13,11 @@ const Home = () => {
     const topicsList = process.env.REACT_APP_FILTERS.split(',');
     const fetchBlogs = async () => {
       const res = await axios.get(`${process.env.REACT_APP_BASE_API_URL}/blogs`);
-      setBlogs(res.data);
-      setFilteredBlogs(res.data);
+      const sortedBlogs = res.data.sort((a, b) => new Date(b.postTime) - new Date(a.postTime));
+      setBlogs(sortedBlogs);
+      setFilteredBlogs(sortedBlogs);
       const topicsSet = new Set(topicsList);
-      res.data.forEach((blog) => {
+      sortedBlogs.forEach((blog) => {
         if (blog.topics) {
           blog.topics.forEach((topic) => topicsSet.add(topic));
         }
@@ -48,7 +49,7 @@ const Home = () => {
     } else {
       const filteredBlogs = blogs.filter((blog) =>
         blog.topics ? blog.topics.some((topic) => selectedTopics.has(topic)) : false
-      );
+      )
       setFilteredBlogs(filteredBlogs);
     }
   };
