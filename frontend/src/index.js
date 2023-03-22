@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import "react-quill/dist/quill.core.css";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

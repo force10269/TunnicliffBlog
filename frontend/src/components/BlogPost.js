@@ -40,9 +40,10 @@ function BlogPost() {
       <p className="text-muted"><i>Published: </i>{new Date(blog.postTime).toLocaleDateString()}</p>
       <p className="text-muted"><i>Author: </i>{blog.author.username}</p>
       <hr />
-      <div dangerouslySetInnerHTML={{ __html: blog.content }} />
+      <div className="view ql-editor" dangerouslySetInnerHTML={{ __html: blog.content }} />
       <CommentSection blogId={id} />
     </div>
+
   );
 }
 

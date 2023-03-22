@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import ReactQuill from 'react-quill';
+import Editor from './Editor';
 import 'react-quill/dist/quill.snow.css';
 import "../styles/CreateBlogPost.css";
 
@@ -36,36 +36,53 @@ const CreateBlogPost = () => {
     delete user.email;
     delete user.password;
     delete user.__v;
-
+  
     // Rename _id field to userId
     user.userId = user._id;
     delete user._id;
-    
-    // Upload the image first and get the ObjectId
+  
+    // Check if image is selected
+    let coverImage;
     const imageFormData = new FormData();
     if (blog.image) {
       imageFormData.append("image", blog.image.file);
+  
+      try {
+        // Upload the image first and get the ObjectId
+        const imageResponse = await axios.post(
+          `${BASE_API_URL}/images`,
+          imageFormData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        coverImage = imageResponse.data.id;
+      } catch (err) {
+        setError(err.message);
+        return;
+      }
     }
-    
+  
+    // Append the coverImage attribute to the blog
+    const blogWithAuthor = {
+      ...blog,
+      author: user,
+      topics: Array.from(selectedFilters),
+      coverImage: coverImage,
+    };
+  
     try {
-      const imageResponse = await axios.post(`${BASE_API_URL}/images`, imageFormData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      const coverImage = imageResponse.data.id;
-
-      // Append the coverImage attribute to the blog
-      const blogWithAuthor = { ...blog, author: user, topics: Array.from(selectedFilters), coverImage: coverImage };
-
       const response = await axios.post(`${BASE_API_URL}/blogs`, blogWithAuthor);
       if (response.status === 201) {
-        navigate('/');
+        navigate("/");
       }
     } catch (err) {
       setError(err.message);
     }
   };
+  
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -84,6 +101,25 @@ const CreateBlogPost = () => {
           };
         });
       };
+    }
+  };
+
+  const handleQuillImageUpload = async (file) => {
+    const imageFormData = new FormData();
+    imageFormData.append("image", file);
+    console.log("HERE");
+    console.log(file);
+  
+    try {
+      const response = await axios.post(`${BASE_API_URL}/images`, imageFormData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response.data.url;
+    } catch (err) {
+      console.error(err);
+      return "";
     }
   };
 
@@ -128,14 +164,14 @@ const CreateBlogPost = () => {
           onChange={handleChange}
         />
 
-        <label htmlFor="content">Content</label>
-        <ReactQuill
-          id="content"
-          name="content"
-          value={blog.content}
-          onChange={(value) => setBlog((prevBlog) => ({ ...prevBlog, content: value }))}
+        <Editor
+          content={blog.content}
+          onChange={(value) =>
+            setBlog((prevBlog) => ({ ...prevBlog, content: value }))
+          }
+          onImageUpload={handleQuillImageUpload}
         />
-        <br /><br />
+        <br /><br /><br /><br /><br />
 
         <label htmlFor="topic">Topic(s)</label>
         <ul className="topic-list">
