@@ -27,7 +27,7 @@ router.post(
     }
 
     try {
-      const { username, email, password } = req.body;
+      const { username, email, password, profilePic } = req.body;
       const existingUser = await User.findOne({ email });
       if (existingUser) {
         return res.status(409).json({ message: 'User with this email already exists' });
@@ -40,6 +40,7 @@ router.post(
         username,
         email,
         password: hashedPassword,
+        profilePic: profilePic
       });
 
       const savedUser = await newUser.save();

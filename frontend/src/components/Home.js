@@ -79,7 +79,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <h1 style={{textAlign: "center"}}>Welcome to The Tunnicliff Blog!</h1>
-      <p id="about" style={{fontSize: "1.3rem"}}>
+      <p id="about" style={{textAlign: "center", fontSize: "1.3rem"}}>
         My name is Korry Tunnicliff, and I am a software developer. 
         <br /><br />
         This blog is dedicated to logging my progress with various issues in projects,

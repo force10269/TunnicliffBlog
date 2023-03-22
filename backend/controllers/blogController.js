@@ -92,8 +92,22 @@ router.delete('/:id', getBlog, async (req, res) => {
 // Get all comments for a blog
 router.get('/:blogId/comments', async (req, res) => {
   try {
-    const comments = await Comment.find({ blogId: req.params.blogId });
-    res.json(comments);
+    const comments = await Comment.find({ blogId: req.params.blogId })
+      .populate({
+        path: 'author',
+        select: 'username profilePic',
+      });
+
+    // Add the profile picture URL to each comment's author
+    const commentsWithProfilePics = comments.map(comment => {
+      const updatedComment = comment.toObject();
+      if (updatedComment.author.profilePic) {
+        updatedComment.author.profilePic = 'http://' + process.env.BACKEND_ORIGIN + '/images/' + updatedComment.author.profilePic;
+      }
+      return updatedComment;
+    });
+
+    res.json(commentsWithProfilePics);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

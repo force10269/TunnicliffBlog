@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import CommentForm from "./CommentForm";
+import defaultProfilePic from '../images/defaultProfilePic.png';
 import "../styles/CommentSection.css";
 
 function CommentSection() {
@@ -29,7 +30,7 @@ function CommentSection() {
         {comments.map((comment) => (
           <div key={comment._id} className="comment">
             <img
-              src={comment.author.profilePic}
+              src={comment.author.profilePic ? comment.author.profilePic : defaultProfilePic}
               alt={`${comment.author.username}'s profile pic`}
               className="profile-pic"
             />
