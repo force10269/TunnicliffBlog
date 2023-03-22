@@ -20,24 +20,6 @@ class Editor extends Component {
     this.props.onChange(html);
   }
 
-  async imageHandler() {
-    const input = document.createElement("input");
-    input.setAttribute("type", "file");
-    input.setAttribute("accept", "image/*");
-    input.click();
-  
-    input.onchange = async () => {
-      const file = input.files[0];
-      const url = await this.props.onImageUpload(file);
-  
-      if (url) {
-        const range = this.quill.getSelection(true);
-        this.quill.insertEmbed(range.index, "image", url);
-        this.quill.setSelection(range.index + 1);
-      }
-    };
-  }
-
   render() {
     return (
         <ReactQuill
@@ -73,11 +55,6 @@ Editor.modules = {
             ['link', 'image', 'video'],
             ['clean']
         ],
-        handlers: {
-            image: function() {
-            this.imageHandler();
-            }
-        }
     },
     clipboard: {
         // toggle to add extra line breaks when pasting HTML:

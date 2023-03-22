@@ -13,10 +13,6 @@ function CommentForm(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const user = JSON.parse(localStorage.getItem("user"));
-    // Remove email, password, and __v fields
-    delete user.email;
-    delete user.password;
-    delete user.__v;
 
     // Rename _id field to userId
     user.userId = user._id;

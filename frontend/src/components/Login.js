@@ -25,6 +25,10 @@ function Login({ setUser }) {
     try {
       const response = await axios.post(`${BASE_API_URL}/login`, formData);
       localStorage.setItem("token", response.data.token);
+      delete response.data.user.email;
+      delete response.data.user.password;
+      delete response.data.user.__v;
+      
       setUser(response.data.user);
       localStorage.setItem("user", JSON.stringify(response.data.user));
       navigate('/');
