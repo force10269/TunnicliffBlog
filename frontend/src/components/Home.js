@@ -115,7 +115,20 @@ const Home = () => {
       <br />
       <div className="blogs-container">
         {filteredBlogs.map((blog) => (
-          <div className="blog-card" key={blog._id}>
+          <div
+            className="blog-card"
+            key={blog._id}
+            style={
+              blog.coverImage
+                ? {
+                    backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7)), url(${process.env.REACT_APP_BASE_API_URL}/images/${blog.coverImage})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                  }
+                : {}
+            }
+          >
           <div className="blog-card-header">
             <h2 className="blog-card-title">
               <Link to={`/blogs/${blog._id}`} className="blog-card-link">

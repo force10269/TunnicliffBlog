@@ -8,6 +8,7 @@ const Signup = ({ setUser }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [profilePic, setProfilePic] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
 
   const handleCloseError = () => {
@@ -17,11 +18,25 @@ const Signup = ({ setUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Upload profile pic and get the ObjectId
+      let profilePicObjectId = null;
+      if (profilePic) {
+        const formData = new FormData();
+        formData.append('image', profilePic);
+        const res = await axios.post(`${process.env.REACT_APP_BASE_API_URL}/images`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        profilePicObjectId = res.data.id;
+      }
+
       await axios.post(`${process.env.REACT_APP_BASE_API_URL}/signup`, {
         username,
         email,
         password,
         confirmPassword,
+        profilePic: profilePicObjectId,
       });
   
       const loginRes = await axios.post(`${process.env.REACT_APP_BASE_API_URL}/login`, {
@@ -71,6 +86,16 @@ const Signup = ({ setUser }) => {
               </div>
             )}
             <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="profilePic">Profile Picture: &nbsp;</label>
+                <input
+                  type="file"
+                  className="form-control-file"
+                  id="profilePic"
+                  accept="image/*"
+                  onChange={(e) => setProfilePic(e.target.files[0])}
+                />
+              </div>
               <div className="form-group">
                 <label htmlFor="username">Username: &nbsp; </label>
                 <input

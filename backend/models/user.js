@@ -16,8 +16,8 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   profilePic: {
-    type: String,
-    default: null,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Image",
   },
 });
 
