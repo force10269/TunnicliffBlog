@@ -2,8 +2,11 @@
 // Some of this is changed, but most of it is from the source shown
 
 import { Component } from 'react';
+import hljs from 'highlight.js';
 import ReactQuill, { Quill } from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import 'highlight.js/styles/monokai-sublime.css';
+
 import ImageResize from 'quill-image-resize-module-react';
 
 Quill.register('modules/imageResize', ImageResize);
@@ -41,6 +44,9 @@ class Editor extends Component {
  * See https://quilljs.com/docs/modules/ for complete options
  */
 Editor.modules = {
+    syntax: {
+        highlight: text => hljs.highlightAuto(text).value,
+    },
     toolbar: {
         container: [
             [{ header: '1' }, { header: '2' }, { font: [] }],
@@ -53,7 +59,7 @@ Editor.modules = {
             { indent: '+1' }
             ],
             ['link', 'image', 'video'],
-            ['clean']
+            ['code-block', 'clean'],
         ],
     },
     clipboard: {
@@ -63,7 +69,7 @@ Editor.modules = {
     imageResize: {
         parchment: Quill.import('parchment'),
         modules: ['Resize', 'DisplaySize']
-    }
+    },
 };
 
 /*
@@ -84,7 +90,8 @@ Editor.formats = [
   'indent',
   'link',
   'image',
-  'video'
+  'video',
+  'code-block',
 ];
 
 export default Editor;

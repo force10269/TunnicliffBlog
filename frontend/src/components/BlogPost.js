@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import CommentSection from "./CommentSection";
 import "../styles/BlogPost.css";
+import 'highlight.js/styles/monokai-sublime.css';
 
 function BlogPost() {
   const { id } = useParams();
@@ -40,7 +41,9 @@ function BlogPost() {
       <p className="text-muted"><i>Published: </i>{new Date(blog.postTime).toLocaleDateString()}</p>
       <p className="text-muted"><i>Author: </i>{blog.author.username}</p>
       <hr />
-      <div className="view ql-editor" dangerouslySetInnerHTML={{ __html: blog.content }} />
+      <div className='ql-snow'> 
+        <div className='view ql-editor' dangerouslySetInnerHTML={{ __html: blog.content }} /> 
+      </div>
       <CommentSection blogId={id} />
     </div>
 
