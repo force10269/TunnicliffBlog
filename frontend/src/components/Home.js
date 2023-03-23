@@ -148,13 +148,13 @@ const Home = () => {
               </span>
             </div>
           </div>
-          <div className="blog-card-body">
-          <div
-            className="blog-card-content"
-            dangerouslySetInnerHTML={{
-              __html: replaceHeadersWithParagraphs(blog.content),
-            }}
-          ></div>
+          <div className="ql-snow blog-card-body">
+            <div
+              className="view ql-editor blog-card-content"
+              dangerouslySetInnerHTML={{
+                __html: replaceHeadersWithParagraphs(blog.content),
+              }}
+            ></div>
           </div>
         </div>
         ))}

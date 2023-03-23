@@ -103,8 +103,6 @@ const CreateBlogPost = () => {
   const handleQuillImageUpload = async (file) => {
     const imageFormData = new FormData();
     imageFormData.append("image", file);
-    console.log("HERE");
-    console.log(file);
   
     try {
       const response = await axios.post(`${BASE_API_URL}/images`, imageFormData, {

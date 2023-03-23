@@ -9,7 +9,6 @@ import Signup from "./components/Signup";
 
 function App() {
   const [user, setUser] = useState(localStorage.getItem("user"));
-  console.log(user);
 
   return (
     <Router>
