@@ -43,6 +43,10 @@ const Signup = ({ setUser }) => {
         email,
         password,
       });
+
+      delete loginRes.data.user.email;
+      delete loginRes.data.user.password;
+      delete loginRes.data.user.__v;
   
       localStorage.setItem("token", loginRes.data.token);
       setUser(loginRes.data.user);
