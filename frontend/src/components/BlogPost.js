@@ -4,6 +4,7 @@ import axios from "axios";
 import CommentSection from "./CommentSection";
 import "../styles/BlogPost.css";
 import 'highlight.js/styles/monokai-sublime.css';
+import defaultProfilePic from '../images/defaultProfilePic.png';
 
 function BlogPost({ blog: blogProp }) {
   const { id } = useParams();
@@ -43,15 +44,32 @@ function BlogPost({ blog: blogProp }) {
     <div className="container">
       <h1 style={{textAlign: "center"}}>{blog.title}</h1>
       <br />
-      <p className="text-muted"><i>Published: </i>{new Date(blog.postTime).toLocaleDateString()}</p>
-      <p className="text-muted"><i>Author: </i>{blog.author.username}</p>
+      <p className="text-muted">
+        <i>Published: </i>{new Date(blog.postTime).toLocaleDateString()}
+      </p>
+      <p className="text-muted">
+        <i>Author: </i>
+        {blog.author.profilePic ? (
+          <img
+            src={`${process.env.REACT_APP_BASE_API_URL}/images/${blog.author.profilePic}`}
+            alt="Profile Pic"
+            style={{ borderRadius: 10, width: 70, height: 70, marginLeft: 10, marginRight: 10, verticalAlign: 'middle' }}
+          />
+        ) : (
+          <img
+            src={defaultProfilePic}
+            alt="Default Profile Pic"
+            style={{ borderRadius: 10, width: 70, height: 70, marginLeft: 10, marginRight: 10, verticalAlign: 'middle' }}
+          />
+        )}
+        {blog.author.username}
+      </p>
       <hr />
       <div className='ql-snow'> 
         <div className='view ql-editor' dangerouslySetInnerHTML={{ __html: blog.content }} /> 
       </div>
       {!blogProp && <CommentSection blogId={id} />}
     </div>
-
   );
 }
 
