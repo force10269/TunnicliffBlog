@@ -29,6 +29,75 @@ const CreateBlogPost = () => {
     });
   };
 
+  // This function is for replacing the pure data inside of the blog.content with the API url to the image
+  const replaceEmbeddedImages = async (htmlContent) => {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlContent, "text/html");
+    const images = doc.getElementsByTagName("img");
+  
+    for (let i = 0; i < images.length; i++) {
+      const img = images[i];
+      const src = img.getAttribute("src");
+  
+      if (src.startsWith("data:")) {
+        // Extract the base64 data
+        const base64Data = src.split(",")[1];
+  
+        // Convert base64 to a file
+        const file = base64ToFile(base64Data);
+  
+        // Upload the image and get the ObjectId
+        const objectId = await uploadImage(file);
+  
+        // Replace the src attribute with the new URL
+        img.setAttribute("src", `${process.env.REACT_APP_BASE_API_URL}/images/${objectId}`);
+      }
+    }
+  
+    return doc.documentElement.outerHTML;
+  };
+  
+  // This is helper to replaceEmbeddedImages
+  const base64ToFile = (base64Data) => {
+    // Replace spaces with '+' (since '+' is replaced with ' ' during encoding)
+    const data = base64Data.replace(/ /g, "+");
+  
+    // Convert base64 data to ArrayBuffer
+    const byteString = atob(data);
+    const arrayBuffer = new ArrayBuffer(byteString.length);
+    const uint8Array = new Uint8Array(arrayBuffer);
+  
+    for (let i = 0; i < byteString.length; i++) {
+      uint8Array[i] = byteString.charCodeAt(i);
+    }
+  
+    // Create a Blob with the ArrayBuffer data and return a File object
+    const blob = new Blob([arrayBuffer], { type: "image/png" });
+    const file = new File([blob], "embedded-image.png");
+  
+    return file;
+  };
+  
+  // This is a helper to replaceEmbeddedImages
+  const uploadImage = async (file) => {
+    const imageFormData = new FormData();
+    imageFormData.append("image", file);
+  
+    try {
+      const response = await axios.post(`${BASE_API_URL}/images`, imageFormData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+  
+      return response.data.id;
+    } catch (err) {
+      console.error(err);
+      return "";
+    }
+  };
+  
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const user = JSON.parse(localStorage.getItem("user"));
@@ -60,10 +129,14 @@ const CreateBlogPost = () => {
         return;
       }
     }
+
+    // Replace embedded images and update blog content
+    const newContent = await replaceEmbeddedImages(blog.content);
   
     // Append the coverImage attribute to the blog
     const blogWithAuthor = {
       ...blog,
+      content: newContent,
       author: user,
       topics: Array.from(selectedFilters),
       coverImage: coverImage,
