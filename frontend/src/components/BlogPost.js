@@ -5,26 +5,31 @@ import CommentSection from "./CommentSection";
 import "../styles/BlogPost.css";
 import 'highlight.js/styles/monokai-sublime.css';
 
-function BlogPost() {
+function BlogPost({ blog: blogProp }) {
   const { id } = useParams();
   const [blog, setBlog] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    async function getBlogPost() {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_API_URL}/blogs/${id}`);
-        setBlog(response.data);
-      } catch (error) {
-        setError("Sorry, an error occurred.");
-      } finally {
-        setLoading(false);
+    if(blogProp) {
+      setBlog(blogProp);
+      setLoading(false);
+    } else {
+      async function getBlogPost() {
+        try {
+          const response = await axios.get(`${process.env.REACT_APP_BASE_API_URL}/blogs/${id}`);
+          setBlog(response.data);
+        } catch (error) {
+          setError("Sorry, an error occurred.");
+        } finally {
+          setLoading(false);
+        }
       }
-    }
 
-    getBlogPost();
-  }, [id]);
+      getBlogPost();
+    }
+  }, [id, blogProp])
 
   if (loading) {
     return <div>Loading...</div>;
@@ -44,7 +49,7 @@ function BlogPost() {
       <div className='ql-snow'> 
         <div className='view ql-editor' dangerouslySetInnerHTML={{ __html: blog.content }} /> 
       </div>
-      <CommentSection blogId={id} />
+      {!blogProp && <CommentSection blogId={id} />}
     </div>
 
   );

@@ -93,9 +93,24 @@
     font-size: 14px;
   }
 
-  #submit {
+  .endFormButton {
     background-color: #3c91e6;
     margin-top: 5vh;
     border-radius: 10px;
     font-size: 3vh;
+  }
+
+  .back-to-edit-button {
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    border: none;
+    background-color: #5c5c5c;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+  }
+  
+  .back-to-edit-button:hover {
+    background-color: #888;
   }
