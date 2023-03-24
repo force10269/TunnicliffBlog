@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import "../styles/Navbar.css";
 
 const Navbar = ({ user, setUser, searchValue, setSearchValue }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchOpen, setSearchOpen] = useState(false);
 
   localStorage.removeItem("searchOpen");
@@ -29,7 +30,7 @@ const Navbar = ({ user, setUser, searchValue, setSearchValue }) => {
       <Link className="navbar-brand" to="/">
         The Tunnicliff Blog
       </Link>
-      <div className="search-container">
+      <div className="search-container" style={{display: `${location.pathname === '/' ? '' : 'none'}`}}>
         <button
           className={`search-icon-btn ${searchOpen ? "hidden" : ""}`}
           onClick={toggleSearch}

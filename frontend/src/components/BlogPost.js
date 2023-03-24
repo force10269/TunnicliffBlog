@@ -95,6 +95,9 @@ function BlogPost({ blog: blogProp }) {
     <div className="container">
       <h1 style={{textAlign: "center"}}>{blog.title}</h1>
       <br />
+      <span className="blog-card-topic">
+        Topics: &nbsp; <u>{blog.topics.join(', ')}</u>
+      </span>
       <p className="text-muted">
         <i>Published: </i>{new Date(blog.postTime).toLocaleDateString()}
       </p>
@@ -104,13 +107,13 @@ function BlogPost({ blog: blogProp }) {
           <img
             src={`${process.env.REACT_APP_BASE_API_URL}/images/${blog.author.profilePic}`}
             alt="Profile Pic"
-            style={{ borderRadius: 10, width: 70, height: 70, marginLeft: 10, marginRight: 10, verticalAlign: 'middle' }}
+            style={{ borderRadius: 10, width: 50, height: 50, marginLeft: 10, marginRight: 10, verticalAlign: 'middle' }}
           />
         ) : (
           <img
             src={defaultProfilePic}
             alt="Default Profile Pic"
-            style={{ borderRadius: 10, width: 70, height: 70, marginLeft: 10, marginRight: 10, verticalAlign: 'middle' }}
+            style={{ borderRadius: 10, width: 50, height: 50, marginLeft: 10, marginRight: 10, verticalAlign: 'middle' }}
           />
         )}
         {blog.author.username}
