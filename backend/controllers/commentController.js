@@ -65,7 +65,7 @@ router.patch('/:id', getComment, async (req, res) => {
 // Delete one comment
 router.delete('/:id', getComment, async (req, res) => {
   try {
-    await res.comment.remove();
+    await Comment.findByIdAndDelete(req.params.id);
     res.json({ message: 'Deleted comment' });
   } catch (err) {
     res.status(500).json({ message: err.message });

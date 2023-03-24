@@ -3,11 +3,15 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import CommentForm from "./CommentForm";
 import defaultProfilePic from '../images/defaultProfilePic.png';
+import { FaTrashAlt, FaRegEdit } from 'react-icons/fa';
 import "../styles/CommentSection.css";
 
 function CommentSection() {
   const { id } = useParams();
   const [comments, setComments] = useState([]);
+  const iconSize = 25;
+
+  const user = JSON.parse(localStorage.getItem("user"))
 
   useEffect(() => {
     async function fetchComments() {
@@ -20,6 +24,26 @@ function CommentSection() {
     }
     fetchComments();
   }, [id]);
+
+  const handleDelete = async (commentId) => {
+    try {
+      await axios.delete(`${process.env.REACT_APP_BASE_API_URL}/comments/${commentId}`);
+      setComments(comments.filter((comment) => comment._id !== commentId));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleEdit = async (commentId, newText) => {
+    try {
+      const res = await axios.patch(`${process.env.REACT_APP_BASE_API_URL}/comments/${commentId}`, {
+        text: newText
+      });
+      setComments(comments.map((comment) => (comment._id === commentId ? res.data : comment)));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <div className="comment-section">
@@ -40,6 +64,16 @@ function CommentSection() {
               <p>{comment.text}</p>
               <span>{comment.nLikes} likes</span>
             </div>
+            {user && comment.author.userId === user._id && (
+              <div className="comment-icons" style={{marginLeft: "auto", marginRight: "0"}}>
+                <button onClick={() => handleEdit(comment._id, prompt("Edit your comment", comment.text))}>
+                  <FaRegEdit size={iconSize}/>
+                </button>
+                <button style={{marginLeft: "1vh"}} onClick={() => handleDelete(comment._id)}>
+                  <FaTrashAlt size={iconSize}/>
+                </button>
+              </div>
+            )}
           </div>
         ))}
       </div>
