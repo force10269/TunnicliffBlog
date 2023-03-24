@@ -96,7 +96,7 @@ function BlogPost({ blog: blogProp }) {
       <h1 style={{textAlign: "center"}}>{blog.title}</h1>
       <br />
       <span className="blog-card-topic">
-        Topics: &nbsp; <u>{blog.topics.join(', ')}</u>
+        <i>Topics: </i><u>{blog.topics.join(', ')}</u>
       </span>
       <p className="text-muted">
         <i>Published: </i>{new Date(blog.postTime).toLocaleDateString()}

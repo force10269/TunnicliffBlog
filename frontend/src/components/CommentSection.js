@@ -62,7 +62,6 @@ function CommentSection() {
               <h5 style={{paddingTop: "15px", color: "#2a2b2e"}}>{comment.author.username}</h5>
               <hr />
               <p>{comment.text}</p>
-              <span>{comment.nLikes} likes</span>
             </div>
             {user && comment.author.userId === user._id && (
               <div className="comment-icons" style={{marginLeft: "auto", marginRight: "0"}}>
