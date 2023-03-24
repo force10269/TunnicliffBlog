@@ -1,0 +1,1 @@
+web:cd backend && yarn install && node server.js
