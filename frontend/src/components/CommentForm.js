@@ -49,6 +49,7 @@ function CommentForm(props) {
           id="comment-text"
           value={commentText}
           onChange={handleCommentTextChange}
+          style={{height: "30%", width: "70%"}}
           required
         ></textarea>
       </div>
