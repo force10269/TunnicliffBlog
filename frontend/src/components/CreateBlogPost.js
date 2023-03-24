@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Editor from './Editor';
@@ -14,12 +14,22 @@ const CreateBlogPost = () => {
   const [blog, setBlog] = useState({
     title: "",
     content: "",
-    author: "",
-    topics: "",
+    author: JSON.parse(localStorage.getItem("user")),
+    postTime: Date.now(),
+    topics: [],
     image: "",
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setBlog((prevBlog) => {
+      return {
+        ...prevBlog,
+        topics: Array.from(selectedFilters),
+      };
+    });
+  }, [selectedFilters]);
 
   const handlePreviewClick = (event) => {
     event.preventDefault();
