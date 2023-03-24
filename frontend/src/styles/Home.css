@@ -145,6 +145,10 @@
   position: relative;
   max-height: 200px;
   overflow-y: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
 }
 
 .blog-card-link {
@@ -160,6 +164,34 @@
 #about {
   margin-left: 10vh;
   margin-right: 10vh;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.pagination-button {
+  background-color: #f1f1f1;
+  border: 1px solid #ddd;
+  color: #333;
+  cursor: pointer;
+  font-size: 1rem;
+  margin: 0 0.25rem;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.pagination-button:hover {
+  background-color: #ddd;
+}
+
+.pagination-button.active {
+  background-color: #2a2b2e;
+  color: white;
 }
 
 @media only screen and (max-width: 768px) {

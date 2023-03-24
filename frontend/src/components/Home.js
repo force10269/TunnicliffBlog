@@ -8,6 +8,8 @@ const Home = () => {
   const [topics, setTopics] = useState([]);
   const [filteredBlogs, setFilteredBlogs] = useState([]);
   const [selectedTopics, setSelectedTopics] = useState(new Set());
+  const [currentPage, setCurrentPage] = useState(1);
+  const blogsPerPage = 10;
 
   useEffect(() => {
     const topicsList = process.env.REACT_APP_FILTERS.split(',');
@@ -26,6 +28,16 @@ const Home = () => {
     };
     fetchBlogs();
   }, []);
+
+  const paginate = (items, page) => {
+    const startIndex = (page - 1) * blogsPerPage;
+    const endIndex = startIndex + blogsPerPage;
+    return items.slice(startIndex, endIndex);
+  };
+
+  useEffect(() => {
+    filterBlogs(selectedTopics);
+  }, [blogs, selectedTopics]);
   
   const handleTopicClick = (topic) => {
     const newSelectedTopics = new Set(selectedTopics);
@@ -52,6 +64,12 @@ const Home = () => {
       )
       setFilteredBlogs(filteredBlogs);
     }
+    setCurrentPage(1);
+  };
+
+  const handlePageClick = (page) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const formatDate = (date) => {
@@ -75,6 +93,14 @@ const Home = () => {
   
     return doc.body.innerHTML;
   };
+
+  function truncateContent(content, maxLength = 100) {
+    if (content.length <= maxLength) return content;
+    return content.substr(0, maxLength) + '...';
+  }
+
+  const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
+  const paginatedBlogs = paginate(filteredBlogs, currentPage);
 
   return (
     <div className="home-container">
@@ -114,7 +140,7 @@ const Home = () => {
       </div>
       <br />
       <div className="blogs-container">
-        {filteredBlogs.map((blog) => (
+        {paginatedBlogs.map((blog) => (
           <div
             className="blog-card"
             key={blog._id}
@@ -152,11 +178,24 @@ const Home = () => {
             <div
               className="view ql-editor blog-card-content"
               dangerouslySetInnerHTML={{
-                __html: replaceHeadersWithParagraphs(blog.content),
+                __html: truncateContent(replaceHeadersWithParagraphs(blog.content)),
               }}
             ></div>
           </div>
         </div>
+        ))}
+      </div>
+      <div className="pagination-container">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            className={`pagination-button ${
+              currentPage === index + 1 ? "active" : ""
+            }`}
+            onClick={() => handlePageClick(index + 1)}
+          >
+            {index + 1}
+          </button>
         ))}
       </div>
     </div>
