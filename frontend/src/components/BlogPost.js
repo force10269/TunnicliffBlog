@@ -19,6 +19,13 @@ function BlogPost({ blog: blogProp }) {
   user.userId = user._id;
   delete user._id;
 
+  const generateSlug = (title) => {
+    return title
+      .toLowerCase()
+      .replace(/[^\w ]+/g, "")
+      .replace(/ +/g, "-");
+  };
+
   async function getLikeId() {
     const likeResponse = await axios.get(`${process.env.REACT_APP_BASE_API_URL}/likes?blogId=${id}`);
     const likedByUser = likeResponse.data.find(like => like.author.userId === user.userId);
@@ -63,6 +70,7 @@ function BlogPost({ blog: blogProp }) {
               setLiked(likedByUser);
             }
           setLikeCount(likeResponse.data.length);
+          window.history.replaceState(null, "", `/blogs/${generateSlug(response.data.title)}`);
         } catch (error) {
           setError("Sorry, an error occurred.");
         } finally {
