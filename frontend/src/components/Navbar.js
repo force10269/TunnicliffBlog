@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/Navbar.css";
 
-const Navbar = ({ user, setUser }) => {
+const Navbar = ({ user, setUser, searchValue, setSearchValue }) => {
   const navigate = useNavigate();
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  localStorage.removeItem("searchOpen");
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -12,11 +15,46 @@ const Navbar = ({ user, setUser }) => {
     navigate('/');
   };
 
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    setSearchValue(searchValue);
+  }
+
+  const toggleSearch = () => {
+    setSearchOpen(!searchOpen);
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <Link className="navbar-brand" to="/">
         The Tunnicliff Blog
       </Link>
+      <div className="search-container">
+        <button
+          className={`search-icon-btn ${searchOpen ? "hidden" : ""}`}
+          onClick={toggleSearch}
+        >
+          🔍
+        </button>
+        <form
+          onSubmit={handleSearchSubmit}
+          className={`search-form ${searchOpen ? "open" : ""}`}
+        >
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            className="search-input"
+          />
+        </form>
+        <button
+          className={`collapse-icon-btn ${searchOpen ? "" : "hidden"}`}
+          onClick={toggleSearch}
+        >
+          &lt;
+        </button>
+      </div>
       <div className="collapse navbar-collapse">
         <ul className="navbar-nav mr-auto">
           {user ? (

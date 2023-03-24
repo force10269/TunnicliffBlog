@@ -9,13 +9,14 @@ import Signup from "./components/Signup";
 
 function App() {
   const [user, setUser] = useState(localStorage.getItem("user"));
+  const [searchValue, setSearchValue] = useState(""); 
 
   return (
     <Router>
       <div className="container-fluid">
-        <Navbar user={user} setUser={setUser} />
+        <Navbar user={user} setUser={setUser} searchValue={searchValue} setSearchValue={setSearchValue} />
         <Routes>
-          <Route exact path="/" element={<Home />} />
+          <Route exact path="/" element={<Home searchValue={searchValue}/>} />
           <Route path="/blogs/:id" element={<BlogPost />} />
           {user && (
             <Route path="/create-blog-post" element={<CreateBlogPost />} />

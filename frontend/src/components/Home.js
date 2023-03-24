@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "../styles/Home.css";
 
-const Home = () => {
+const Home = ({ searchValue }) => {
   const [blogs, setBlogs] = useState([]);
   const [topics, setTopics] = useState([]);
   const [filteredBlogs, setFilteredBlogs] = useState([]);
@@ -36,8 +36,9 @@ const Home = () => {
   };
 
   useEffect(() => {
-    filterBlogs(selectedTopics);
-  }, [blogs, selectedTopics]);
+    filterBlogs(selectedTopics, searchValue);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blogs, selectedTopics, searchValue]);
   
   const handleTopicClick = (topic) => {
     const newSelectedTopics = new Set(selectedTopics);
@@ -54,18 +55,22 @@ const Home = () => {
     setSelectedTopics(new Set());
     filterBlogs(new Set());
   };
+
+  const filterBlogs = (selectedTopics, searchValue = "") => {
+    /*
+      This is a complicated line that deals with a lot of scenarios.
+      We are basically covering every scenario where either
+      the selectedTopics or searchValue are null or have a value
+    */
+    let filteredBlogs = blogs.filter(blog =>
+      (selectedTopics.size === 0 || (blog.topics && blog.topics.some(topic => selectedTopics.has(topic)))) &&
+      (!searchValue.trim() || blog.title.toLowerCase().includes(searchValue.trim().toLowerCase()))
+    );
   
-  const filterBlogs = (selectedTopics) => {
-    if (selectedTopics.size === 0) {
-      setFilteredBlogs(blogs);
-    } else {
-      const filteredBlogs = blogs.filter((blog) =>
-        blog.topics ? blog.topics.some((topic) => selectedTopics.has(topic)) : false
-      )
-      setFilteredBlogs(filteredBlogs);
-    }
+    setFilteredBlogs(filteredBlogs);
     setCurrentPage(1);
   };
+  
 
   const handlePageClick = (page) => {
     setCurrentPage(page);
