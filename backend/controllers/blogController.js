@@ -52,9 +52,6 @@ router.patch('/:id', getBlog, async (req, res) => {
   if (req.body.postTime != null) {
     res.blog.postTime = req.body.postTime;
   }
-  if (req.body.nLikes != null) {
-    res.blog.nLikes = req.body.nLikes;
-  }
   if (req.body.numComments != null) {
     res.blog.numComments = req.body.numComments;
   }
@@ -117,7 +114,7 @@ async function getBlog(req, res, next) {
   let blog;
   try {
     blog = await Blog.findById(req.params.id);
-    if (blog == null) {
+     if (blog == null) {
       return res.status(404).json({ message: 'Cannot find blog' });
     }
   } catch (err) {

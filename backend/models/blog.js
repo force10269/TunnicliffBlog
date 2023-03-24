@@ -9,10 +9,6 @@ const blogSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  nLikes: {
-    type: Number,
-    default: 0,
-  },
   numComments: {
     type: Number,
     default: 0,

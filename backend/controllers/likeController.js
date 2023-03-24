@@ -3,10 +3,12 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Like = require('../models/like');
 
-// Get all likes
+// Get all likes for a specific blog post
 router.get('/', async (req, res) => {
+  const { blogId } = req.query;
+
   try {
-    const likes = await Like.find();
+    const likes = await Like.find({ referenceId: blogId });
     res.json(likes);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -28,6 +30,7 @@ router.post('/', async (req, res) => {
       name: req.body.author.name,
     },
   });
+
   try {
     const newLike = await like.save();
     res.status(201).json(newLike);
@@ -59,7 +62,7 @@ router.patch('/:id', getLike, async (req, res) => {
 // Delete one like
 router.delete('/:id', getLike, async (req, res) => {
   try {
-    await res.like.remove();
+    await Like.findByIdAndDelete(req.params.id);
     res.json({ message: 'Deleted like' });
   } catch (err) {
     res.status(500).json({ message: err.message });

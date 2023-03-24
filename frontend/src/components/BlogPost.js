@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import CommentSection from "./CommentSection";
+import { FaThumbsUp } from 'react-icons/fa';
 import "../styles/BlogPost.css";
 import 'highlight.js/styles/monokai-sublime.css';
 import defaultProfilePic from '../images/defaultProfilePic.png';
@@ -11,6 +12,41 @@ function BlogPost({ blog: blogProp }) {
   const [blog, setBlog] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [likeCount, setLikeCount] = useState(0);
+  const [liked, setLiked] = useState(false);
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  user.userId = user._id;
+  delete user._id;
+
+  async function getLikeId() {
+    const likeResponse = await axios.get(`${process.env.REACT_APP_BASE_API_URL}/likes?blogId=${id}`);
+    const likedByUser = likeResponse.data.find(like => like.author.userId === user.userId);
+    if (likedByUser) {
+      setLiked(likedByUser);
+    } else {
+      setLiked(false);
+    }
+  }
+
+  async function handleLike() {
+    try {
+      if (liked) {
+        await axios.delete(`${process.env.REACT_APP_BASE_API_URL}/likes/${liked._id}`);
+        setLikeCount(likeCount - 1);
+        getLikeId();
+      } else {
+        await axios.post(`${process.env.REACT_APP_BASE_API_URL}/likes`, {
+          referenceId: blog._id,
+          author: user,
+        });
+        setLikeCount(likeCount + 1);
+        getLikeId();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   useEffect(() => {
     if(blogProp) {
@@ -21,6 +57,12 @@ function BlogPost({ blog: blogProp }) {
         try {
           const response = await axios.get(`${process.env.REACT_APP_BASE_API_URL}/blogs/${id}`);
           setBlog(response.data);
+            const likeResponse = await axios.get(`${process.env.REACT_APP_BASE_API_URL}/likes?blogId=${id}`);
+            const likedByUser = likeResponse.data.find(like => like.author.userId === user.userId);
+            if (likedByUser) {
+              setLiked(likedByUser);
+            }
+          setLikeCount(likeResponse.data.length);
         } catch (error) {
           setError("Sorry, an error occurred.");
         } finally {
@@ -30,7 +72,8 @@ function BlogPost({ blog: blogProp }) {
 
       getBlogPost();
     }
-  }, [id, blogProp])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, blogProp]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -64,6 +107,14 @@ function BlogPost({ blog: blogProp }) {
         )}
         {blog.author.username}
       </p>
+      <div className="like-container">
+        {user && (
+          <button className={`like-button ${liked ? 'liked' : ''}`} onClick={handleLike}>
+          <FaThumbsUp /> Like
+        </button>
+        )}
+        <span style={{paddingLeft: "10px"}} className="like-count">{likeCount} likes</span>
+      </div>
       <hr />
       <div className='ql-snow'> 
         <div className='view ql-editor' dangerouslySetInnerHTML={{ __html: blog.content }} /> 
