@@ -16,16 +16,20 @@ function BlogPost({ blog: blogProp }) {
   const [liked, setLiked] = useState(false);
 
   const user = JSON.parse(localStorage.getItem("user"));
-  user.userId = user._id;
-  delete user._id;
+  if(user){
+    user.userId = user._id;
+    delete user._id;
+  }
 
   async function getLikeId() {
     const likeResponse = await axios.get(`${process.env.REACT_APP_BASE_API_URL}/likes?blogId=${id}`);
-    const likedByUser = likeResponse.data.find(like => like.author.userId === user.userId);
-    if (likedByUser) {
-      setLiked(likedByUser);
-    } else {
-      setLiked(false);
+    if(user){
+      const likedByUser = likeResponse.data.find(like => like.author.userId === user.userId);
+      if (likedByUser) {
+        setLiked(likedByUser);
+      } else {
+        setLiked(false);
+      }
     }
   }
 
@@ -57,11 +61,13 @@ function BlogPost({ blog: blogProp }) {
         try {
           const response = await axios.get(`${process.env.REACT_APP_BASE_API_URL}/blogs/${id}`);
           setBlog(response.data);
-            const likeResponse = await axios.get(`${process.env.REACT_APP_BASE_API_URL}/likes?blogId=${id}`);
+          const likeResponse = await axios.get(`${process.env.REACT_APP_BASE_API_URL}/likes?blogId=${id}`);
+          if(user){
             const likedByUser = likeResponse.data.find(like => like.author.userId === user.userId);
             if (likedByUser) {
               setLiked(likedByUser);
             }
+          }
           setLikeCount(likeResponse.data.length);
         } catch (error) {
           setError("Sorry, an error occurred.");
