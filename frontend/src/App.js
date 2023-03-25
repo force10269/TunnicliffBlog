@@ -8,7 +8,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 
 function App() {
-  const [user, setUser] = useState(localStorage.getItem("user"));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [searchValue, setSearchValue] = useState(""); 
 
   return (
