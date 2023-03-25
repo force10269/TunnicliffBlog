@@ -60,11 +60,12 @@ const Navbar = ({ user, setUser, searchValue, setSearchValue }) => {
         <ul className="navbar-nav mr-auto">
           {user ? (
             <>
+              {user.username === process.env.REACT_APP_ADMIN && 
               <li className="nav-item">
                 <Link className="nav-link" to="/create-blog-post">
                   Create Blog Post
                 </Link>
-              </li>
+              </li>}
               <li className="nav-item">
                 <button className="nav-link btn btn-link" onClick={handleLogout}>
                   Logout

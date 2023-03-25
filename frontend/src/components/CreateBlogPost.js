@@ -131,6 +131,11 @@ const CreateBlogPost = () => {
     // Rename _id field to userId
     user.userId = user._id;
     delete user._id;
+
+    if(user.username !== process.env.REACT_APP_ADMIN) {
+      setError("You are not authorized to create a blog post.");
+      return;
+    }
   
     // Check if image is selected
     let coverImage;
