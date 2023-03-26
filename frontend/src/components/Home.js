@@ -115,7 +115,7 @@ const Home = ({ searchValue }) => {
         <br /><br />
         This blog is dedicated to logging my progress with various issues in projects,
         as well as interesting things I have learned throughout the course of my software development journey. This website was built with the use
-        use of the MERN stack, and is hosted on both Heroku and Netlify.
+        of the MERN stack, and is hosted on both Heroku and Netlify.
       </p>
       <br />
       <div className="topics-container">
