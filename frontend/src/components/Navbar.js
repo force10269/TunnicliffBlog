@@ -23,6 +23,7 @@ const Navbar = ({ user, setUser, searchValue, setSearchValue }) => {
 
   const toggleSearch = () => {
     setSearchOpen(!searchOpen);
+    setSearchValue("");
   };
 
   return (
