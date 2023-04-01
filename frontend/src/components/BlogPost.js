@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import CommentSection from "./CommentSection";
+import LoadingOverlay from "./LoadingOverlay";
 import { FaThumbsUp } from 'react-icons/fa';
 import "../styles/BlogPost.css";
 import 'highlight.js/styles/monokai-sublime.css';
@@ -82,7 +83,7 @@ function BlogPost({ blog: blogProp }) {
   }, [id, blogProp]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingOverlay />;;
   }
 
   if (error) {
