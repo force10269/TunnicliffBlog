@@ -14,12 +14,11 @@ Quill.register('modules/imageResize', ImageResize);
 class Editor extends Component {
   constructor(props) {
     super(props);
-    this.state = { editorHtml: '' };
+    this.state = { editorHtml: this.props.content };
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(html) {
-    this.setState({ editorHtml: html });
     this.props.onChange(html);
   }
 
