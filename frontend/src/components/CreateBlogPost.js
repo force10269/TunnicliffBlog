@@ -33,7 +33,8 @@ const CreateBlogPost = () => {
 
   const handlePreviewClick = (event) => {
     event.preventDefault();
-    setPreview(true);
+    const serializedBlog = encodeURIComponent(JSON.stringify(blog));
+    window.open(`/preview#${serializedBlog}`, "_blank");
   };
 
   const handleBackToEditClick = (event) => {
@@ -236,82 +237,69 @@ const CreateBlogPost = () => {
   };
 
   return (
-    <>
-      {preview ? (
-        <>
-          <div style={{ textAlign: "center", marginTop: "20px" }}>
-            <button className="back-to-edit-button" onClick={handleBackToEditClick}>
-              Back to Edit
-            </button>
+    <div className="create-blog-post-container">
+      <h2 style={{textAlign: "center"}}>Create Blog Post</h2>
+      <form onSubmit={handleSubmit}>
+        {blog.image ? (
+          <div className="selected-image-container">
+            <img src={blog.image.dataUrl} alt="Selected" />
+            <button onClick={() => setBlog((prevBlog) => ({ ...prevBlog, image: null }))}>X</button>
           </div>
-          <BlogPost blog={blog} />
-        </>
-      ) : (
-        <div className="create-blog-post-container">
-          <h2 style={{textAlign: "center"}}>Create Blog Post</h2>
-          <form onSubmit={handleSubmit}>
-            {blog.image ? (
-              <div className="selected-image-container">
-                <img src={blog.image.dataUrl} alt="Selected" />
-                <button onClick={() => setBlog((prevBlog) => ({ ...prevBlog, image: null }))}>X</button>
-              </div>
-            ) : (
-              <div className="file-input-container">
-                <label htmlFor="image">Image</label>
-                <br />
-                <input type="file" id="image" name="image" accept="image/*" onChange={handleImageChange} />
-              </div>
-            )}
-    
-            <label htmlFor="title">Title</label>
-            <input
-              type="text"
-              name="title"
-              id="title"
-              value={blog.title}
-              onChange={handleChange}
-              placeholder="Title"
-              required
-            />
-    
-            <Editor
-              content={blog.content}
-              onChange={(value) =>
-                setBlog((prevBlog) => ({ ...prevBlog, content: value }))
-              }
-              onImageUpload={handleQuillImageUpload}
-            />
-            <br /><br /><br /><br /><br />
-    
-            <label htmlFor="topic">Topic(s)</label>
-            <ul className="topic-list">
-                {filters.map((filter) => (
-                  <li
-                    key={filter}
-                    className={`topic-button ${
-                      selectedFilters.has(filter) ? "active" : ""
-                    }`}
-                    onClick={() => handleFilterClick(filter)}
-                  >
-                    {filter}
-                  </li>
-                ))}
-            </ul>
-    
-            <div className="clear-container">
-              <button className="clear-button" onClick={handleClearClick}>
-                Clear topics
-              </button>
-          </div> 
+        ) : (
+          <div className="file-input-container">
+            <label htmlFor="image">Image</label>
             <br />
-    
-            <button className="endFormButton" onClick={handlePreviewClick}>Preview</button>
-            <button className="endFormButton" type="submit">Create Blog Post</button>
-          </form>
-          {error && <p className="error">{error}</p>}
-        </div>
-      )}
-    </>
+            <input type="file" id="image" name="image" accept="image/*" onChange={handleImageChange} />
+          </div>
+        )}
+
+        <label htmlFor="title">Title</label>
+        <input
+          type="text"
+          name="title"
+          id="title"
+          value={blog.title}
+          onChange={handleChange}
+          placeholder="Title"
+          required
+        />
+
+        <Editor
+          content={blog.content}
+          onChange={(value) =>
+            setBlog((prevBlog) => ({ ...prevBlog, content: value }))
+          }
+          onImageUpload={handleQuillImageUpload}
+        />
+        <br /><br /><br /><br /><br />
+
+        <label htmlFor="topic">Topic(s)</label>
+        <ul className="topic-list">
+            {filters.map((filter) => (
+              <li
+                key={filter}
+                className={`topic-button ${
+                  selectedFilters.has(filter) ? "active" : ""
+                }`}
+                onClick={() => handleFilterClick(filter)}
+              >
+                {filter}
+              </li>
+            ))}
+        </ul>
+
+        <div className="clear-container">
+          <button className="clear-button" onClick={handleClearClick}>
+            Clear topics
+          </button>
+      </div> 
+        <br />
+
+        <button className="endFormButton" onClick={handlePreviewClick}>Preview</button>
+        <button className="endFormButton" type="submit">Create Blog Post</button>
+      </form>
+      {error && <p className="error">{error}</p>}
+    </div>
   );
 };
 

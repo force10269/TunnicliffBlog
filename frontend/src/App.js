@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import BlogPost from "./components/BlogPost";
 import CreateBlogPost from "./components/CreateBlogPost";
+import BlogPreview from "./components/BlogPreview";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 
@@ -19,7 +20,10 @@ function App() {
           <Route exact path="/" element={<Home searchValue={searchValue}/>} />
           <Route path="/blogs/:id" element={<BlogPost />} />
           {user && user.username === process.env.REACT_APP_ADMIN && (
-            <Route path="/create-blog-post" element={<CreateBlogPost />} />
+            <>
+              <Route path="/create-blog-post" element={<CreateBlogPost />} />
+              <Route path="/preview" element={<BlogPreview />} />
+            </>
           )}
           {!user && (
             <>
