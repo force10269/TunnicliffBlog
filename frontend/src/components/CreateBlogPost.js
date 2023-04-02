@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Editor from './Editor';
-import BlogPost from "./BlogPost";
 import 'react-quill/dist/quill.snow.css';
 import "../styles/CreateBlogPost.css";
 
@@ -33,13 +32,8 @@ const CreateBlogPost = () => {
 
   const handlePreviewClick = (event) => {
     event.preventDefault();
-    const serializedBlog = encodeURIComponent(JSON.stringify(blog));
-    window.open(`/preview#${serializedBlog}`, "_blank");
-  };
-
-  const handleBackToEditClick = (event) => {
-    event.preventDefault();
-    setPreview(false);
+    localStorage.setItem("previewBlog", JSON.stringify(blog));
+    window.open('/preview');
   };
 
   const handleChange = (event) => {

@@ -1,16 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import BlogPost from "./BlogPost";
 
 const BlogPreview = () => {
-  const [blog, setBlog] = useState(null);
-
-  useEffect(() => {
-    const serializedBlog = window.location.hash.substr(1);
-    if (serializedBlog) {
-      const deserializedBlog = JSON.parse(decodeURIComponent(serializedBlog));
-      setBlog(deserializedBlog);
-    }
-  }, []);
+  const blog = JSON.parse(localStorage.getItem("previewBlog"));
 
   const handleClosePageClick = (event) => {
     event.preventDefault();
