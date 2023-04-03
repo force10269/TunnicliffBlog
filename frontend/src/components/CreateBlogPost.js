@@ -68,6 +68,9 @@ const CreateBlogPost = () => {
   
         // Replace the src attribute with the new URL
         img.setAttribute("src", `${process.env.REACT_APP_BASE_API_URL}/images/${objectId}`);
+
+        // Add loading="lazy" to increase img loading efficiency
+        img.setAttribute("loading", "lazy");
       }
     }
   
