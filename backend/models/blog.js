@@ -37,7 +37,7 @@ const blogSchema = new mongoose.Schema({
   coverImage: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Image",
-  }
+  },
 });
 
 module.exports = mongoose.model("Blog", blogSchema);
