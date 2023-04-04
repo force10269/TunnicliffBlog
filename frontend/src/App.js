@@ -10,14 +10,19 @@ import Signup from "./components/Signup";
 
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
-  const [searchValue, setSearchValue] = useState(""); 
+  const [searchValue, setSearchValue] = useState("");
 
   return (
     <Router>
       <div className="container-fluid">
-        <Navbar user={user} setUser={setUser} searchValue={searchValue} setSearchValue={setSearchValue} />
+        <Navbar
+          user={user}
+          setUser={setUser}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+        />
         <Routes>
-          <Route exact path="/" element={<Home searchValue={searchValue}/>} />
+          <Route exact path="/" element={<Home searchValue={searchValue} />} />
           <Route path="/blogs/:id" element={<BlogPost />} />
           {user && user.username === process.env.REACT_APP_ADMIN && (
             <>
@@ -28,7 +33,7 @@ function App() {
           {!user && (
             <>
               <Route path="/login" element={<Login setUser={setUser} />} />
-              <Route path="/signup" element={<Signup setUser={setUser}/>} />
+              <Route path="/signup" element={<Signup setUser={setUser} />} />
             </>
           )}
         </Routes>

@@ -13,13 +13,13 @@ const Navbar = ({ user, setUser, searchValue, setSearchValue }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setUser(null);
-    navigate('/');
+    navigate("/");
   };
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     setSearchValue(searchValue);
-  }
+  };
 
   const toggleSearch = () => {
     setSearchOpen(!searchOpen);
@@ -31,7 +31,10 @@ const Navbar = ({ user, setUser, searchValue, setSearchValue }) => {
       <Link className="navbar-brand" to="/">
         The Tunnicliff Blog
       </Link>
-      <div className="search-container" style={{display: `${location.pathname === '/' ? '' : 'none'}`}}>
+      <div
+        className="search-container"
+        style={{ display: `${location.pathname === "/" ? "" : "none"}` }}
+      >
         <button
           className={`search-icon-btn ${searchOpen ? "hidden" : ""}`}
           onClick={toggleSearch}
@@ -61,14 +64,18 @@ const Navbar = ({ user, setUser, searchValue, setSearchValue }) => {
         <ul className="navbar-nav mr-auto">
           {user ? (
             <>
-              {user.username === process.env.REACT_APP_ADMIN && 
+              {user.username === process.env.REACT_APP_ADMIN && (
+                <li className="nav-item">
+                  <Link className="nav-link" to="/create-blog-post">
+                    Create Blog Post
+                  </Link>
+                </li>
+              )}
               <li className="nav-item">
-                <Link className="nav-link" to="/create-blog-post">
-                  Create Blog Post
-                </Link>
-              </li>}
-              <li className="nav-item">
-                <button className="nav-link btn btn-link" onClick={handleLogout}>
+                <button
+                  className="nav-link btn btn-link"
+                  onClick={handleLogout}
+                >
                   Logout
                 </button>
               </li>

@@ -12,10 +12,14 @@ const Home = ({ searchValue }) => {
   const blogsPerPage = 10;
 
   useEffect(() => {
-    const topicsList = process.env.REACT_APP_FILTERS.split(',');
+    const topicsList = process.env.REACT_APP_FILTERS.split(",");
     const fetchBlogs = async () => {
-      const res = await axios.get(`${process.env.REACT_APP_BASE_API_URL}/blogs`);
-      const sortedBlogs = res.data.sort((a, b) => new Date(b.postTime) - new Date(a.postTime));
+      const res = await axios.get(
+        `${process.env.REACT_APP_BASE_API_URL}/blogs`
+      );
+      const sortedBlogs = res.data.sort(
+        (a, b) => new Date(b.postTime) - new Date(a.postTime)
+      );
       setBlogs(sortedBlogs);
       setFilteredBlogs(sortedBlogs);
       const topicsSet = new Set(topicsList);
@@ -37,9 +41,9 @@ const Home = ({ searchValue }) => {
 
   useEffect(() => {
     filterBlogs(selectedTopics, searchValue);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blogs, selectedTopics, searchValue]);
-  
+
   const handleTopicClick = (topic) => {
     const newSelectedTopics = new Set(selectedTopics);
     if (selectedTopics.has(topic)) {
@@ -50,7 +54,7 @@ const Home = ({ searchValue }) => {
     setSelectedTopics(newSelectedTopics);
     filterBlogs(newSelectedTopics);
   };
-  
+
   const handleClearClick = () => {
     setSelectedTopics(new Set());
     filterBlogs(new Set());
@@ -62,31 +66,34 @@ const Home = ({ searchValue }) => {
       We are basically covering every scenario where either
       the selectedTopics or searchValue are null or have a value
     */
-    let filteredBlogs = blogs.filter(blog =>
-      (selectedTopics.size === 0 || (blog.topics && blog.topics.some(topic => selectedTopics.has(topic)))) &&
-      (!searchValue.trim() || blog.title.toLowerCase().includes(searchValue.trim().toLowerCase()))
+    let filteredBlogs = blogs.filter(
+      (blog) =>
+        (selectedTopics.size === 0 ||
+          (blog.topics &&
+            blog.topics.some((topic) => selectedTopics.has(topic)))) &&
+        (!searchValue.trim() ||
+          blog.title.toLowerCase().includes(searchValue.trim().toLowerCase()))
     );
-  
+
     setFilteredBlogs(filteredBlogs);
     setCurrentPage(1);
   };
-  
 
   const handlePageClick = (page) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const formatDate = (date) => {
     const d = new Date(date);
     return `${d.getMonth() + 1}/${d.getDate()}/${d.getFullYear()}`;
-  }
+  };
 
   const replaceHeadersWithParagraphs = (html) => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, "text/html");
     const headerTags = ["h1", "h2", "h3", "h4", "h5", "h6"];
-  
+
     headerTags.forEach((tag) => {
       const headers = doc.querySelectorAll(tag);
       headers.forEach((header) => {
@@ -95,13 +102,13 @@ const Home = ({ searchValue }) => {
         header.parentNode.replaceChild(p, header);
       });
     });
-  
+
     return doc.body.innerHTML;
   };
 
   function truncateContent(content, maxLength = 100) {
     if (content.length <= maxLength) return content;
-    return content.substr(0, maxLength) + '...';
+    return content.substr(0, maxLength) + "...";
   }
 
   const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
@@ -109,13 +116,15 @@ const Home = ({ searchValue }) => {
 
   return (
     <div className="home-container">
-      <h1 style={{textAlign: "center"}}>Welcome to The Tunnicliff Blog!</h1>
-      <p id="about" style={{textAlign: "center", fontSize: "1.3rem"}}>
-        My name is Korry Tunnicliff, and I am a software developer. 
-        <br /><br />
-        This blog is dedicated to logging my progress with various issues in projects,
-        as well as interesting things I have learned throughout the course of my software development journey. This website was built with the use
-        of the MERN stack, and is hosted on both Heroku and Netlify.
+      <h1 style={{ textAlign: "center" }}>Welcome to The Tunnicliff Blog!</h1>
+      <p id="about" style={{ textAlign: "center", fontSize: "1.3rem" }}>
+        My name is Korry Tunnicliff, and I am a software developer.
+        <br />
+        <br />
+        This blog is dedicated to logging my progress with various issues in
+        projects, as well as interesting things I have learned throughout the
+        course of my software development journey. This website was built with
+        the use of the MERN stack, and is hosted on both Heroku and Netlify.
       </p>
       <br />
       <div className="topics-container">
@@ -138,10 +147,8 @@ const Home = ({ searchValue }) => {
           <button className="clear-button" onClick={handleClearClick}>
             Clear topics
           </button>
-       </div> 
-       <div className="blog-count">
-          Blogs: {filteredBlogs.length}
         </div>
+        <div className="blog-count">Blogs: {filteredBlogs.length}</div>
       </div>
       <br />
       <div className="blogs-container">

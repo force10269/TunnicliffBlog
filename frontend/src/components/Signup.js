@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
 import "../styles/Signup.css";
 
 const Signup = ({ setUser }) => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [profilePic, setProfilePic] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleCloseError = () => {
     setErrorMessage("");
@@ -22,12 +22,16 @@ const Signup = ({ setUser }) => {
       let profilePicObjectId = null;
       if (profilePic) {
         const formData = new FormData();
-        formData.append('image', profilePic);
-        const res = await axios.post(`${process.env.REACT_APP_BASE_API_URL}/images`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
+        formData.append("image", profilePic);
+        const res = await axios.post(
+          `${process.env.REACT_APP_BASE_API_URL}/images`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           }
-        });
+        );
         profilePicObjectId = res.data.id;
       }
 
@@ -38,24 +42,27 @@ const Signup = ({ setUser }) => {
         confirmPassword,
         profilePic: profilePicObjectId,
       });
-  
-      const loginRes = await axios.post(`${process.env.REACT_APP_BASE_API_URL}/login`, {
-        email,
-        password,
-      });
+
+      const loginRes = await axios.post(
+        `${process.env.REACT_APP_BASE_API_URL}/login`,
+        {
+          email,
+          password,
+        }
+      );
 
       delete loginRes.data.user.email;
       delete loginRes.data.user.password;
       delete loginRes.data.user.__v;
-  
+
       localStorage.setItem("token", loginRes.data.token);
       setUser(loginRes.data.user);
       localStorage.setItem("user", JSON.stringify(loginRes.data.user));
-      navigate('/');
+      navigate("/");
     } catch (error) {
-      if(error.response?.data?.errors?.[0]?.hasOwnProperty('msg')){
+      if (error.response?.data?.errors?.[0]?.hasOwnProperty("msg")) {
         setErrorMessage(error.response.data.errors[0].msg);
-      }else{
+      } else {
         setErrorMessage(error.response.data.message);
       }
     }
@@ -64,15 +71,20 @@ const Signup = ({ setUser }) => {
   const navigate = useNavigate();
 
   const closeModal = () => {
-    navigate('/');
+    navigate("/");
   };
 
   return (
     <div className="modal">
       <div className="modal-dialog">
         <div className="modal-content">
-          <button type="button" className="close" onClick={closeModal} data-dismiss="modal">
-              &times;
+          <button
+            type="button"
+            className="close"
+            onClick={closeModal}
+            data-dismiss="modal"
+          >
+            &times;
           </button>
           <div className="modal-header">
             <h4 className="modal-title">Sign up</h4>
@@ -83,7 +95,11 @@ const Signup = ({ setUser }) => {
                 <div className="alert alert-danger">
                   {errorMessage}
                   &nbsp;
-                  <button type="button" className="alert-close" onClick={handleCloseError}>
+                  <button
+                    type="button"
+                    className="alert-close"
+                    onClick={handleCloseError}
+                  >
                     &times;
                   </button>
                 </div>
@@ -134,7 +150,9 @@ const Signup = ({ setUser }) => {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="confirmPassword">Confirm Password: &nbsp;</label>
+                <label htmlFor="confirmPassword">
+                  Confirm Password: &nbsp;
+                </label>
                 <input
                   type="password"
                   className="form-control"

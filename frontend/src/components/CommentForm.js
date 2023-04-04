@@ -21,8 +21,8 @@ function CommentForm(props) {
     const comment = {
       blogId: props.blogId,
       text: commentText,
-      author: user
-    }
+      author: user,
+    };
 
     try {
       const response = await axios.post(`${BASE_API_URL}/comments`, comment);
@@ -33,7 +33,7 @@ function CommentForm(props) {
 
     // Clear the comment text field
     setCommentText("");
-  }
+  };
 
   const user = JSON.parse(localStorage.getItem("user"));
   if (!user) {
@@ -49,7 +49,7 @@ function CommentForm(props) {
           id="comment-text"
           value={commentText}
           onChange={handleCommentTextChange}
-          style={{height: "30%", width: "70%"}}
+          style={{ height: "30%", width: "70%" }}
           required
         ></textarea>
       </div>

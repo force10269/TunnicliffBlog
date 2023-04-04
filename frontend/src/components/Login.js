@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
 
 function Login({ setUser }) {
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const [showModal, setShowModal] = useState(true);
   const navigate = useNavigate();
 
@@ -28,10 +28,10 @@ function Login({ setUser }) {
       delete response.data.user.email;
       delete response.data.user.password;
       delete response.data.user.__v;
-      
+
       setUser(response.data.user);
       localStorage.setItem("user", JSON.stringify(response.data.user));
-      navigate('/');
+      navigate("/");
     } catch (error) {
       setErrorMessage("Invalid email or password");
     }
@@ -39,7 +39,7 @@ function Login({ setUser }) {
 
   const closeModal = () => {
     setShowModal(false);
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -50,7 +50,12 @@ function Login({ setUser }) {
             <div className="modal-content">
               <div className="modal-header">
                 <h4 className="modal-title">Login</h4>
-                <button type="button" className="close" onClick={closeModal} data-dismiss="modal">
+                <button
+                  type="button"
+                  className="close"
+                  onClick={closeModal}
+                  data-dismiss="modal"
+                >
                   &times;
                 </button>
               </div>
@@ -80,7 +85,9 @@ function Login({ setUser }) {
                         required
                       />
                     </div>
-                    {errorMessage && <p className="error-message">{errorMessage}</p>}
+                    {errorMessage && (
+                      <p className="error-message">{errorMessage}</p>
+                    )}
                     <button type="submit" className="btn btn-primary">
                       Login
                     </button>
