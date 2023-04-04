@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import "../styles/LazyBlogCard.css";
 
 const LazyBlogCard = ({ blog, formatDate, truncateContent, replaceHeadersWithParagraphs }) => {
   const cardRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    const currentRef = cardRef.current;
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -26,8 +26,8 @@ const LazyBlogCard = ({ blog, formatDate, truncateContent, replaceHeadersWithPar
     }
 
     return () => {
-      if (cardRef.current) {
-        observer.unobserve(cardRef.current);
+      if (currentRef) {
+        observer.unobserve(currentRef);
       }
     };
   }, []);
