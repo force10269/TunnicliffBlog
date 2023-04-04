@@ -6,6 +6,7 @@ import hljs from "highlight.js";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import "highlight.js/styles/monokai-sublime.css";
+import "../styles/Editor.css";
 
 import ImageResize from "quill-image-resize-module-react";
 
@@ -24,18 +25,19 @@ class Editor extends Component {
 
   render() {
     return (
-      <ReactQuill
-        theme={this.state.theme}
-        onChange={this.props.onChange}
-        value={this.props.content}
-        modules={Editor.modules}
-        formats={Editor.formats}
-        bounds={"#root"}
-        placeholder={this.props.placeholder}
-        style={{ height: "30vh" }}
-      />
+      <div className="editor-container">
+        <ReactQuill
+          theme={this.state.theme}
+          onChange={this.props.onChange}
+          value={this.props.content}
+          modules={Editor.modules}
+          formats={Editor.formats}
+          bounds={"#root"}
+          placeholder={this.props.placeholder}
+        />
+      </div>
     );
-  }
+  }  
 }
 
 /*

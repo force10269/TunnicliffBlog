@@ -1,0 +1,12 @@
+.editor-container {
+    position: relative;
+    resize: vertical;
+    min-height: 30vh; /* Set the initial height */
+}
+
+.ql-editor {
+    min-height: 30vh;
+    height: auto !important;
+    max-height: none !important;
+    overflow-y: hidden; /* Hide the scrollbar */
+}
