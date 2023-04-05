@@ -115,19 +115,17 @@ const Home = ({ searchValue }) => {
   const paginatedBlogs = paginate(filteredBlogs, currentPage);
 
   return (
-    <div className="home-container">
-      <h1 style={{ textAlign: "center" }}>Welcome to The Tunnicliff Blog!</h1>
-      <p id="about" style={{ textAlign: "center", fontSize: "1.3rem" }}>
-        My name is Korry Tunnicliff, and I am a software developer.
-        <br />
-        <br />
-        This blog is dedicated to logging my progress with various issues in
-        projects, as well as interesting things I have learned throughout the
-        course of my software development journey. This website was built with
-        the use of the MERN stack, and is hosted on both Heroku and Netlify.
-      </p>
+    <main className="home-container" role="main">
+      <h1 style={{textAlign: "center"}}>Welcome to The Tunnicliff Blog!</h1>
+      <section id="about" style={{textAlign: "center", fontSize: "1.3rem", paddingTop: "30px"}}>
+        My name is Korry Tunnicliff, and I am a software developer. 
+        <br /><br />
+        This blog is dedicated to logging my progress with various issues in projects,
+        as well as interesting things I have learned throughout the course of my software development journey. This website was built with the use
+        use of the MERN stack, and is hosted on both Heroku and Netlify.
+      </section>
       <br />
-      <div className="topics-container">
+      <nav className="topics-container" aria-label="Topics">
         <div className="scroll-container">
           <ul className="topic-list">
             {topics.map((topic) => (
@@ -147,11 +145,13 @@ const Home = ({ searchValue }) => {
           <button className="clear-button" onClick={handleClearClick}>
             Clear topics
           </button>
+       </div> 
+       <div className="blog-count" aria-live="polite">
+          Blogs: {filteredBlogs.length}
         </div>
-        <div className="blog-count">Blogs: {filteredBlogs.length}</div>
-      </div>
+      </nav>
       <br />
-      <div className="blogs-container">
+      <section className="blogs-container" aria-label="Blog posts">
         {paginatedBlogs.map((blog) => (
           <LazyBlogCard
             key={blog._id}
@@ -161,8 +161,8 @@ const Home = ({ searchValue }) => {
             replaceHeadersWithParagraphs={replaceHeadersWithParagraphs}
           />
         ))}
-      </div>
-      <div className="pagination-container">
+      </section>
+      <nav className="pagination-container" aria-label="Pagination">
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index}
@@ -174,8 +174,8 @@ const Home = ({ searchValue }) => {
             {index + 1}
           </button>
         ))}
-      </div>
-    </div>
+      </nav>
+    </main>
   );
 };
 

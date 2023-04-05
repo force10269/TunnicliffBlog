@@ -104,66 +104,42 @@ function BlogPost({ blog: blogProp }) {
 
   return (
     <div className="container">
-      <h1 style={{ textAlign: "center" }}>{blog.title}</h1>
+      <h1 style={{textAlign: "center"}} tabIndex="0">{blog.title}</h1>
       <br />
-      <span className="blog-card-topic">
-        <i>Topics: </i>
-        <u>{blog.topics.join(", ")}</u>
+      <span className="blog-card-topic" tabIndex="0">
+        <i>Topics: </i><u>{blog.topics.join(', ')}</u>
       </span>
-      <p className="text-muted">
-        <i>Published: </i>
-        {new Date(blog.postTime).toLocaleDateString()}
+      <p className="text-muted" tabIndex="0">
+        <i>Published: </i>{new Date(blog.postTime).toLocaleDateString()}
       </p>
-      <p className="text-muted">
+      <p className="text-muted" tabIndex="0">
         <i>Author: </i>
         {blog.author.profilePic ? (
           <img
             src={`${process.env.REACT_APP_BASE_API_URL}/images/${blog.author.profilePic}`}
-            alt="Profile Pic"
-            style={{
-              borderRadius: 10,
-              width: 50,
-              height: 50,
-              marginLeft: 10,
-              marginRight: 10,
-              verticalAlign: "middle",
-            }}
+            alt="Author's Profile"
+            style={{ borderRadius: 10, width: 50, height: 50, marginLeft: 10, marginRight: 10, verticalAlign: 'middle' }}
           />
         ) : (
           <img
             src={defaultProfilePic}
-            alt="Default Profile Pic"
-            style={{
-              borderRadius: 10,
-              width: 50,
-              height: 50,
-              marginLeft: 10,
-              marginRight: 10,
-              verticalAlign: "middle",
-            }}
+            alt="Default Profile"
+            style={{ borderRadius: 10, width: 50, height: 50, marginLeft: 10, marginRight: 10, verticalAlign: 'middle' }}
           />
         )}
         {blog.author.username}
       </p>
       <div className="like-container">
         {user && (
-          <button
-            className={`like-button ${liked ? "liked" : ""}`}
-            onClick={handleLike}
-          >
-            <FaThumbsUp /> Like
-          </button>
+          <button className={`like-button ${liked ? 'liked' : ''}`} onClick={handleLike} aria-label={liked ? "Unlike this blog post" : "Like this blog post"}>
+          <FaThumbsUp /> Like
+        </button>
         )}
-        <span style={{ paddingLeft: "10px" }} className="like-count">
-          {likeCount} likes
-        </span>
+        <span style={{paddingLeft: "10px"}} className="like-count" tabIndex="0">{likeCount} likes</span>
       </div>
       <hr />
-      <div className="ql-snow">
-        <div
-          className="view ql-editor"
-          dangerouslySetInnerHTML={{ __html: blog.content }}
-        />
+      <div className='ql-snow'> 
+        <div className='view ql-editor' dangerouslySetInnerHTML={{ __html: blog.content }} tabIndex="0" /> 
       </div>
       {!blogProp && <CommentSection blogId={id} />}
     </div>

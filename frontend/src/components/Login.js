@@ -50,13 +50,8 @@ function Login({ setUser }) {
             <div className="modal-content">
               <div className="modal-header">
                 <h4 className="modal-title">Login</h4>
-                <button
-                  type="button"
-                  className="close"
-                  onClick={closeModal}
-                  data-dismiss="modal"
-                >
-                  &times;
+                <button type="button" className="close" onClick={closeModal} data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div className="modal-body">

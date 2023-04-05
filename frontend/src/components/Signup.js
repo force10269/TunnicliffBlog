@@ -78,13 +78,8 @@ const Signup = ({ setUser }) => {
     <div className="modal">
       <div className="modal-dialog">
         <div className="modal-content">
-          <button
-            type="button"
-            className="close"
-            onClick={closeModal}
-            data-dismiss="modal"
-          >
-            &times;
+          <button type="button" className="close" onClick={closeModal} data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
           </button>
           <div className="modal-header">
             <h4 className="modal-title">Sign up</h4>
@@ -95,12 +90,8 @@ const Signup = ({ setUser }) => {
                 <div className="alert alert-danger">
                   {errorMessage}
                   &nbsp;
-                  <button
-                    type="button"
-                    className="alert-close"
-                    onClick={handleCloseError}
-                  >
-                    &times;
+                  <button type="button" className="alert-close" onClick={handleCloseError} aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
               </div>
