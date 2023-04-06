@@ -45,63 +45,63 @@
     align-items: center;
 }
   
-  .search-icon-btn {
-    background: transparent;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    padding-left: 4px;
-    padding-right: 4px;
-    margin-right: 4px;
-    padding-bottom: 30px;
-  }
-  
-  .search-icon-btn.hidden {
-    display: none;
-  }
-  
-  .search-form {
-    display: flex;
-    align-items: center;
-    max-width: 0;
-    overflow: hidden;
-    position: relative;
-    transition: max-width 1s ease;
-    padding-top: 7px;
-  }
-  
-  .search-form.open {
-    max-width: 50vw;
-  }
-  
-  .search-input {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 6px 12px;
-    font-size: 1rem;
-    outline: none;
-    flex-grow: 1;
-    transition: width 0.5s ease;
-    width: 35vw;
-  }
+.search-icon-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding-left: 4px;
+  padding-right: 4px;
+  margin-right: 4px;
+  padding-bottom: 30px;
+}
 
-  .collapse-icon-btn {
-    background: transparent;
-    border: none;
-    color: #2a2b2e;
-    font-size: 2rem;
-    right: 2%;
-    cursor: pointer;
-    padding-left: 4px;
-    padding-right: 4px;
-    padding-bottom: 25px;
-    margin-left: 4px;
-    position: absolute;
-  }
+.search-icon-btn.hidden {
+  display: none;
+}
 
-  .collapse-icon-btn.hidden {
-    display: none;
-  }
+.search-form {
+  display: flex;
+  align-items: center;
+  max-width: 0;
+  overflow: hidden;
+  position: relative;
+  transition: max-width 1s ease;
+  padding-top: 7px;
+}
+
+.search-form.open {
+  max-width: 50vw;
+}
+
+.search-input {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 1rem;
+  outline: none;
+  flex-grow: 1;
+  transition: width 0.5s ease;
+  width: 35vw;
+}
+
+.collapse-icon-btn {
+  background: transparent;
+  border: none;
+  color: #2a2b2e;
+  font-size: 2rem;
+  right: 2%;
+  cursor: pointer;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-bottom: 25px;
+  margin-left: 4px;
+  position: absolute;
+}
+
+.collapse-icon-btn.hidden {
+  display: none;
+}
   
 /* Responsive styles for search bar */
 @media only screen and (max-width: 768px) {
