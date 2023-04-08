@@ -21,7 +21,7 @@ router.get('/:id', getComment, (req, res) => {
 // Create one comment
 router.post('/', async (req, res) => {
   const comment = new Comment({
-    blogId: req.body.blogId,
+    slug: req.body.slug,
     postTime: req.body.postTime,
     text: req.body.text,
     author: {

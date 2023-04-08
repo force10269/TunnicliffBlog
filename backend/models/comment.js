@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
 const commentSchema = new mongoose.Schema({
-  blogId: {
-    type: mongoose.Schema.Types.ObjectId,
+  slug: {
+    type: String,
     ref: "Blog",
     required: true,
   },

@@ -7,8 +7,9 @@ import { FaTrashAlt, FaRegEdit } from "react-icons/fa";
 import "../styles/CommentSection.css";
 
 function CommentSection() {
-  const { id } = useParams();
+  const { slug } = useParams();
   const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true);
   const iconSize = 25;
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -17,15 +18,17 @@ function CommentSection() {
     async function fetchComments() {
       try {
         const res = await axios.get(
-          `${process.env.REACT_APP_BASE_API_URL}/blogs/${id}/comments`
+          `${process.env.REACT_APP_BASE_API_URL}/blogs/${slug}/comments`
         );
         setComments(res.data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     }
     fetchComments();
-  }, [id]);
+  }, [slug]);
 
   const handleDelete = async (commentId) => {
     try {
@@ -46,9 +49,17 @@ function CommentSection() {
           text: newText,
         }
       );
+  
+      const updatedComment = res.data;
+  
+      // Add the profile picture URL to the updated comment's author
+      if (updatedComment.author.profilePic) {
+        updatedComment.author.profilePic = `${process.env.REACT_APP_BASE_API_URL}/images/${updatedComment.author.profilePic}`;
+      }
+  
       setComments(
         comments.map((comment) =>
-          comment._id === commentId ? res.data : comment
+          comment._id === commentId ? updatedComment : comment
         )
       );
     } catch (error) {
@@ -56,10 +67,14 @@ function CommentSection() {
     }
   };
 
+  if (loading) {
+    return <p>Loading comments...</p>;
+  }
+
   return (
     <div className="comment-section">
       <h2>Comments ({comments.length})</h2>
-      <CommentForm blogId={id} comments={comments} setComments={setComments} />
+      <CommentForm slug={slug} comments={comments} setComments={setComments} />
       <hr />
       <div className="comment-list">
         {comments.map((comment) => (
@@ -111,3 +126,4 @@ function CommentSection() {
 }
 
 export default CommentSection;
+   

@@ -13,27 +13,35 @@ function CommentForm(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const user = JSON.parse(localStorage.getItem("user"));
-
+  
     // Rename _id field to userId
     user.userId = user._id;
     delete user._id;
-
+  
     const comment = {
-      blogId: props.blogId,
+      slug: props.slug,
       text: commentText,
       author: user,
     };
-
+  
     try {
       const response = await axios.post(`${BASE_API_URL}/comments`, comment);
-      props.setComments([...props.comments, response.data]);
+      const submittedComment = response.data;
+  
+      // Add the profile picture URL to the submitted comment's author
+      if (submittedComment.author.profilePic) {
+        submittedComment.author.profilePic = process.env.REACT_APP_BASE_API_URL + '/images/' + submittedComment.author.profilePic;
+      }
+      
+      props.setComments([...props.comments, submittedComment]);
     } catch (err) {
       console.error(err.message);
     }
-
+  
     // Clear the comment text field
     setCommentText("");
   };
+  
 
   const user = JSON.parse(localStorage.getItem("user"));
   if (!user) {

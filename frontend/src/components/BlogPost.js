@@ -9,7 +9,8 @@ import "highlight.js/styles/monokai-sublime.css";
 import defaultProfilePic from "../images/defaultProfilePic.png";
 
 function BlogPost({ blog: blogProp }) {
-  const { id } = useParams();
+  const { slug } = useParams();
+  const [id, setId] = useState("");
   const [blog, setBlog] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -24,7 +25,7 @@ function BlogPost({ blog: blogProp }) {
 
   async function getLikeId() {
     const likeResponse = await axios.get(
-      `${process.env.REACT_APP_BASE_API_URL}/likes?blogId=${id}`
+      `${process.env.REACT_APP_BASE_API_URL}/likes?slug=${slug}`
     );
     if (user) {
       const likedByUser = likeResponse.data.find(
@@ -48,7 +49,7 @@ function BlogPost({ blog: blogProp }) {
         getLikeId();
       } else {
         await axios.post(`${process.env.REACT_APP_BASE_API_URL}/likes`, {
-          referenceId: blog._id,
+          slug: blog.slug,
           author: user,
         });
         setLikeCount(likeCount + 1);
@@ -60,39 +61,41 @@ function BlogPost({ blog: blogProp }) {
   }
 
   useEffect(() => {
+    async function getBlogPost() {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_API_URL}/blogs/${slug}`
+        );
+        setBlog(response.data);
+        setId(response.data._id);
+        const likeResponse = await axios.get(
+          `${process.env.REACT_APP_BASE_API_URL}/likes?slug=${response.data.slug}`
+        );
+        if (user) {
+          const likedByUser = likeResponse.data.find(
+            (like) => like.author.userId === user.userId
+          );
+          if (likedByUser) {
+            setLiked(likedByUser);
+          }
+        }
+        setLikeCount(likeResponse.data.length);
+      } catch (error) {
+        setError("Sorry, an error occurred.");
+      } finally {
+        setLoading(false);
+      }
+    }
+  
     if (blogProp) {
       setBlog(blogProp);
+      setId(blogProp._id);
       setLoading(false);
     } else {
-      async function getBlogPost() {
-        try {
-          const response = await axios.get(
-            `${process.env.REACT_APP_BASE_API_URL}/blogs/${id}`
-          );
-          setBlog(response.data);
-          const likeResponse = await axios.get(
-            `${process.env.REACT_APP_BASE_API_URL}/likes?blogId=${id}`
-          );
-          if (user) {
-            const likedByUser = likeResponse.data.find(
-              (like) => like.author.userId === user.userId
-            );
-            if (likedByUser) {
-              setLiked(likedByUser);
-            }
-          }
-          setLikeCount(likeResponse.data.length);
-        } catch (error) {
-          setError("Sorry, an error occurred.");
-        } finally {
-          setLoading(false);
-        }
-      }
-
       getBlogPost();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, blogProp]);
+  }, [slug, id, blogProp]);
 
   if (loading) {
     return <LoadingOverlay />;
@@ -141,7 +144,7 @@ function BlogPost({ blog: blogProp }) {
       <div className='ql-snow'> 
         <div className='view ql-editor' dangerouslySetInnerHTML={{ __html: blog.content }} tabIndex="0" /> 
       </div>
-      {!blogProp && <CommentSection blogId={id} />}
+      {!blogProp && <CommentSection slug={slug} />}
     </div>
   );
 }

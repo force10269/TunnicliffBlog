@@ -23,7 +23,7 @@ function App() {
         />
         <Routes>
           <Route exact path="/" element={<Home searchValue={searchValue} />} />
-          <Route path="/blogs/:id" element={<BlogPost />} />
+          <Route path="/blogs/:slug" element={<BlogPost />} />
           {user && user.username === process.env.REACT_APP_ADMIN && (
             <>
               <Route path="/create-blog-post" element={<CreateBlogPost />} />

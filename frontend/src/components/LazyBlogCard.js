@@ -59,7 +59,7 @@ const LazyBlogCard = ({
     >
       <div className="blog-card-header">
         <h2 className="blog-card-title">
-          <Link to={`/blogs/${blog._id}`} className="blog-card-link">
+          <Link to={`/blogs/${blog.slug}`} className="blog-card-link">
             {blog.title}
           </Link>
         </h2>

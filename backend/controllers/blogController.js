@@ -90,9 +90,9 @@ router.delete('/:slug', getBlog, async (req, res) => {
 });
 
 // Get all comments for a blog
-router.get('/:blogId/comments', async (req, res) => {
+router.get('/:slug/comments', async (req, res) => {
   try {
-    const comments = await Comment.find({ blogId: req.params.blogId })
+    const comments = await Comment.find({ slug: req.params.slug })
       .populate({
         path: 'author',
         select: 'username profilePic',
@@ -116,7 +116,7 @@ router.get('/:blogId/comments', async (req, res) => {
 async function getBlog(req, res, next) {
   let blog;
   try {
-    blog = await Blog.findById(req.params.slug);
+    blog = await Blog.findOne({ slug: req.params.slug });
      if (blog == null) {
       return res.status(404).json({ message: 'Cannot find blog' });
     }

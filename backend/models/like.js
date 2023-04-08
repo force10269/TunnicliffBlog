@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
 const likeSchema = new mongoose.Schema({
-  referenceId: {
-    type: mongoose.Schema.Types.ObjectId,
+  slug: {
+    type: String,
     ref: "Blog",
     required: true,
   },
@@ -25,7 +25,7 @@ const likeSchema = new mongoose.Schema({
   },
 });
 
-// Add a unique index to prevent duplicate Likes
-likeSchema.index({ referenceId: 1, "author.userId": 1 }, { unique: true });
+// Add a unique index to prevent duplicate Likes per user per slug
+likeSchema.index({ "slug": 1, "author.userId": 1 }, { unique: true });
 
 module.exports = mongoose.model("Like", likeSchema);

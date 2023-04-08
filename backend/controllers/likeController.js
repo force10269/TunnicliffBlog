@@ -5,10 +5,10 @@ const Like = require('../models/like');
 
 // Get all likes for a specific blog post
 router.get('/', async (req, res) => {
-  const { blogId } = req.query;
+  const { slug } = req.query;
 
   try {
-    const likes = await Like.find({ referenceId: blogId });
+    const likes = await Like.find({ slug: slug });
     res.json(likes);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -23,7 +23,7 @@ router.get('/:id', getLike, (req, res) => {
 // Create one like
 router.post('/', async (req, res) => {
   const like = new Like({
-    referenceId: req.body.referenceId,
+    slug: req.body.slug,
     author: {
       userId: req.body.author.userId,
       profilePic: req.body.author.profilePic,
@@ -41,8 +41,8 @@ router.post('/', async (req, res) => {
 
 // Update one like
 router.patch('/:id', getLike, async (req, res) => {
-  if (req.body.referenceId != null) {
-    res.like.referenceId = req.body.referenceId;
+  if (req.body.slug != null) {
+    res.like.slug = req.body.slug;
   }
   if (req.body.author != null) {
     res.like.author = {
