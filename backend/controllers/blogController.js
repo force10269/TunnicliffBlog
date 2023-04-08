@@ -3,6 +3,7 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const Blog = require('../models/blog');
 const Comment = require('../models/comment');
+const slugify = require('slugify');
 
 // Get all blogs
 router.get('/', async (req, res) => {
@@ -15,7 +16,7 @@ router.get('/', async (req, res) => {
 });
 
 // Get one blog
-router.get('/:id', getBlog, (req, res) => {
+router.get('/:slug', getBlog, (req, res) => {
   res.json(res.blog);
 });
 
@@ -26,6 +27,7 @@ router.post('/', async (req, res) => {
   }
   const blog = new Blog({
     title: req.body.title,
+    slug: slugify(req.body.title, { lower: true }),
     content: req.body.content,
     author: {
       userId: req.body.author.userId,
@@ -45,9 +47,10 @@ router.post('/', async (req, res) => {
 });
 
 // Update one blog
-router.patch('/:id', getBlog, async (req, res) => {
+router.patch('/:slug', getBlog, async (req, res) => {
   if (req.body.title != null) {
     res.blog.title = req.body.title;
+    res.blog.slug = slugify(req.body.title, { lower: true });
   }
   if (req.body.postTime != null) {
     res.blog.postTime = req.body.postTime;
@@ -77,7 +80,7 @@ router.patch('/:id', getBlog, async (req, res) => {
 });
 
 // Delete one blog
-router.delete('/:id', getBlog, async (req, res) => {
+router.delete('/:slug', getBlog, async (req, res) => {
   try {
     await res.blog.remove();
     res.json({ message: 'Deleted blog' });
@@ -113,7 +116,7 @@ router.get('/:blogId/comments', async (req, res) => {
 async function getBlog(req, res, next) {
   let blog;
   try {
-    blog = await Blog.findById(req.params.id);
+    blog = await Blog.findById(req.params.slug);
      if (blog == null) {
       return res.status(404).json({ message: 'Cannot find blog' });
     }
