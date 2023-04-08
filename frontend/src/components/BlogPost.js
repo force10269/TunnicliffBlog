@@ -98,7 +98,7 @@ function BlogPost({ blog: blogProp }) {
   }, [slug, id, blogProp]);
 
   if (loading) {
-    return <LoadingOverlay />;
+    return <LoadingOverlay message="Loading..."/>;
   }
 
   if (error) {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Editor from "./Editor";
-import CreateBlogPostLoadingOverlay from "./CreateBlogPostLoadingOverlay";
+import LoadingOverlay from "./LoadingOverlay";
 import "react-quill/dist/quill.snow.css";
 import "../styles/CreateBlogPost.css";
 
@@ -253,7 +253,7 @@ const CreateBlogPost = () => {
   };
 
   if(creatingBlogPost) {
-    return <CreateBlogPostLoadingOverlay />
+    return <LoadingOverlay message="Creating blog post..."/>
   }
 
   return (
