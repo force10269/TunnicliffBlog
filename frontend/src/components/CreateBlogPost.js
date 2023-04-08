@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Editor from "./Editor";
+import CreateBlogPostLoadingOverlay from "./CreateBlogPostLoadingOverlay";
 import "react-quill/dist/quill.snow.css";
 import "../styles/CreateBlogPost.css";
 
 const CreateBlogPost = () => {
   const BASE_API_URL = process.env.REACT_APP_BASE_API_URL;
   const filters = process.env.REACT_APP_FILTERS.split(",");
+  const [creatingBlogPost, setCreatingBlogPost] = useState(false);
   const [selectedFilters, setSelectedFilters] = useState(new Set());
   const [preview, setPreview] = useState(false);
   const [blog, setBlog] = useState({
@@ -130,6 +132,9 @@ const CreateBlogPost = () => {
       setPreview(false);
       return;
     }
+
+    setCreatingBlogPost(true);
+
     const user = JSON.parse(localStorage.getItem("user"));
 
     // Rename _id field to userId
@@ -187,6 +192,7 @@ const CreateBlogPost = () => {
       }
     } catch (err) {
       setError(err.message);
+      setCreatingBlogPost(false);
     }
   };
 
@@ -246,8 +252,13 @@ const CreateBlogPost = () => {
     setSelectedFilters(new Set());
   };
 
+  if(creatingBlogPost) {
+    return <CreateBlogPostLoadingOverlay />
+  }
+
   return (
     <div className="create-blog-post-container">
+      {error && <p className="error">{error}</p>}
       <h2 style={{ textAlign: "center" }}>Create Blog Post</h2>
       <form onSubmit={handleSubmit}>
         {blog.image ? (
@@ -328,7 +339,6 @@ const CreateBlogPost = () => {
           Create Blog Post
         </button>
       </form>
-      {error && <p className="error">{error}</p>}
     </div>
   );
 };
