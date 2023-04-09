@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import LazyBlogCard from "./LazyBlogCard";
+import LoadingOverlay from "./LoadingOverlay";
 import "../styles/Home.css";
 
 const Home = ({ searchValue }) => {
@@ -9,11 +10,14 @@ const Home = ({ searchValue }) => {
   const [filteredBlogs, setFilteredBlogs] = useState([]);
   const [selectedTopics, setSelectedTopics] = useState(new Set());
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  
   const blogsPerPage = 10;
 
   useEffect(() => {
     const topicsList = process.env.REACT_APP_FILTERS.split(",");
     const fetchBlogs = async () => {
+      setIsLoading(true);
       const res = await axios.get(
         `${process.env.REACT_APP_BASE_API_URL}/blogs`
       );
@@ -29,6 +33,7 @@ const Home = ({ searchValue }) => {
         }
       });
       setTopics(Array.from(topicsSet).filter((topic) => topic !== undefined));
+      setIsLoading(false);
     };
     fetchBlogs();
   }, []);
@@ -113,6 +118,10 @@ const Home = ({ searchValue }) => {
 
   const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
   const paginatedBlogs = paginate(filteredBlogs, currentPage);
+
+  if(isLoading) {
+    return <LoadingOverlay message="Loading..." />
+  }
 
   return (
     <main className="home-container" role="main">
