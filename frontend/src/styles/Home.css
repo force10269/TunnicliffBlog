@@ -3,6 +3,7 @@
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  background: linear-gradient(to bottom, #FFF, #fff4f1);
 }
 
 .topics-container {
@@ -176,7 +177,6 @@
 
 .pagination-button {
   background-color: #f1f1f1;
-  border: 1px solid #ddd;
   color: #333;
   cursor: pointer;
   font-size: 1rem;
