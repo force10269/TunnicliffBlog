@@ -58,6 +58,8 @@ function CommentForm(props) {
           value={commentText}
           onChange={handleCommentTextChange}
           style={{ height: "30%", width: "70%" }}
+          aria-label="Enter your comment here"
+          aria-required="true"
           required
         ></textarea>
       </div>
