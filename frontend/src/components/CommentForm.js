@@ -30,7 +30,7 @@ function CommentForm(props) {
   
       // Add the profile picture URL to the submitted comment's author
       if (submittedComment.author.profilePic) {
-        submittedComment.author.profilePic = process.env.REACT_APP_BASE_API_URL + '/images/' + submittedComment.author.profilePic;
+        submittedComment.author.profilePic = BASE_API_URL + '/images/' + submittedComment.author.profilePic;
       }
       
       props.setComments([...props.comments, submittedComment]);
